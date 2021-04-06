@@ -16,21 +16,28 @@ Give examples
 
 ### Installing
 
-A step by step series of examples that tell you how to get a development env running
-
-Say what the step will be
-
+* Go to the frontend directory, and then
 ```
-Give the example
+npm install
 ```
-
-And repeat
-
+* Likewise, go to the backend directory, and then
 ```
-until finished
+npm install
 ```
 
-End with an example of getting some data out of the system or using it for a little demo
+### Running
+
+* Go to the frontend directory, and then
+```
+npm run start
+```
+to run the frontend React App on port 3000.
+
+* Likewise, go to the backend directory, and then
+```
+npm run start
+```
+to run the backend Express server on port 3001.
 
 ## Running the tests
 
