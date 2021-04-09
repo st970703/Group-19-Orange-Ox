@@ -1,0 +1,110 @@
+.canvas {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  padding: 40px 0;
+}
+
+.topInterface {
+  width: 100%;
+  height: 720px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.toolbar {
+  width: 100px;
+  align-self: start;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.toolbarButton {
+  height: 100px;
+  width: 100px;
+  border: none;
+  background-color: white;
+  margin-bottom: 8px;
+  border-radius: 8px;
+}
+
+.toolbarButtonIcon {
+  height: 64px;
+  width: 64px;
+}
+
+.canvasBoard {
+  width: 960px;
+  height: 720px;
+  background-color: white;
+}
+
+.brushbar {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.brushes {
+  width: 304px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: start;
+  flex-wrap: wrap;
+}
+
+.brush {
+  width: 144px;
+  height: 144px;
+  background-color: #53DD6C;
+  border-radius: 8px;
+  margin: 4px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.stickersButton {
+  width: 304px;
+  height: 72px;
+  margin: 4px auto;
+  border-radius: 8px;
+  background-color: #AA3E98;
+  font-size: 32px;
+  font-weight: bold;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.bottomInterface {
+  height: 152px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+
+.color {
+  height: 144px;
+  width: 144px;
+  margin: 4px;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.selectedColor {
+  color: white;
+  width: 104px;
+  height: 104px;
+}

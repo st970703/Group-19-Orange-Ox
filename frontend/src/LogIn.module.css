@@ -1,0 +1,122 @@
+.login {
+  width: 480px;
+  height: 600px;
+  background-color: #F1F9FF;
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  text-align: center;
+}
+
+.selector {
+  width: 100%;
+  height: 64px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  border-top: 1px solid black;
+  cursor: pointer;
+  font-size: 24px;
+}
+
+.option {
+  width: 50%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  color: #AAAAAA;
+  background-color: #e5e9ec;
+  border: 1px solid black;
+}
+
+.optionSelected {
+  width: 50%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+.flexSpaceBetween {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  height: 400px;
+}
+
+.details {
+  width: 400px;
+  padding-top: 24px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: stretch;
+}
+
+.input {
+  height: 40px;
+  font-size: 20px;
+  border-radius: 8px;
+  margin-bottom: 8px;
+  border: 1px solid black;
+}
+
+.buttonLogIn {
+  height: 40px;
+  font-size: 20px;
+  border-radius: 8px;
+  margin-bottom: 8px;
+  border: none;
+  background-color: #87E379;
+}
+
+.useGoogle {
+  justify-self: flex-end;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.orDivider {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  color: #BCBCBC;
+}
+
+.dividerRule {
+  width: 200px;
+  color: #BCBCBC;
+  margin: auto 4px;
+}
+
+.signInWithGoogle {
+  background-color: #5383EC;
+  border: none;
+  width: 400px;
+  height: 64px;
+  border-radius: 8px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  font-size: 24px;
+}
+
+.logoGoogle {
+  color: white;
+  height: 32px;
+  width: 32px;
+  margin: 8px;
+}
