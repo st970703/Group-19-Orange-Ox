@@ -9,6 +9,7 @@ import Account from './Account';
 import LogIn from './LogIn';
 import Friends from './Friends';
 import About from './About';
+import Canvas from './Canvas';
 import './App.css';
 
 function App() {
@@ -16,6 +17,9 @@ function App() {
     <Router>
       <div className='root'>
         <Switch>
+          <Route path='/:userId/canvas/:canvasId'>
+            <Canvas />
+          </Route>
           <Route path='/:userId/account'>
             <Account />
           </Route>
