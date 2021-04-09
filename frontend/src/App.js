@@ -7,24 +7,29 @@ import {
 } from 'react-router-dom';
 import Account from './Account';
 import LogIn from './LogIn';
+import Friends from './Friends';
+import About from './About';
+import './App.css';
 
 function App() {
   return (
     <Router>
-      <Switch>
-        <Route path='/:userId/account'>
-          <Account />
-        </Route>
-        <Route path='/:userId/friends'>
-          <Account />
-        </Route>
-        <Route path='/about'>
-          <Account />
-        </Route>
-        <Route path='/'>
-          <LogIn />
-        </Route>
-      </Switch>
+      <div className='root'>
+        <Switch>
+          <Route path='/:userId/account'>
+            <Account />
+          </Route>
+          <Route path='/:userId/friends'>
+            <Friends />
+          </Route>
+          <Route path='/about'>
+            <About />
+          </Route>
+          <Route path='/'>
+            <LogIn />
+          </Route>
+        </Switch>
+      </div>
     </Router>
   );
 }
