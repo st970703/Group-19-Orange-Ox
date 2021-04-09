@@ -72,8 +72,17 @@
   align-items: center;
 }
 
-.selectedBrush {
-
+.stickersButton {
+  width: 304px;
+  height: 72px;
+  margin: 4px auto;
+  border-radius: 8px;
+  background-color: #AA3E98;
+  font-size: 32px;
+  font-weight: bold;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .bottomInterface {
