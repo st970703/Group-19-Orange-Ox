@@ -2,11 +2,13 @@ import React, { useState } from 'react';
 import {useParams} from 'react-router-dom';
 import { FaHome, FaSave, FaCheck } from 'react-icons/fa';
 import styles from './Canvas.module.css';
+import CanvasView from './components/CanvasView';
 
 function Canvas() {
   const { userId, canvasId } = useParams();
-  const [selectedColor, setSelectedColor] = useState('black');
+  const [selectedColor, setSelectedColor] = useState('#000000');
   const [selectedBrush, setSelectedBrush] = useState('pen');
+  const [selectClear, setSelectClear] = useState('false');
 
   const colors = [
     {
@@ -69,7 +71,7 @@ function Canvas() {
       icon: ''
     },
     {
-      brushType: 'square',
+      brushType: 'rectangle',
       icon: ''
     },
     {
@@ -77,6 +79,9 @@ function Canvas() {
       icon: ''
     }
   ];
+
+  const canvasWidth = 960;
+  const canvasHeight = 720;
 
   return (
     <div className={styles.canvas}>
@@ -91,10 +96,15 @@ function Canvas() {
         </div>
 
         <div className={styles.canvasBoard}>
-          {
-            // p5.js Canvas will go in here
-            // Width: 960px, Height: 720px
-           }
+          <CanvasView canvasWidth={canvasWidth}
+            canvasHeight={canvasHeight}
+            color={selectedColor}
+            stroke={3}
+            clear={selectClear}
+            setClear={setSelectClear}
+            brush={selectedBrush}
+            setBrush={setSelectedBrush}
+          />
         </div>
 
         <div className={styles.brushbar}>
@@ -115,7 +125,7 @@ function Canvas() {
 
       <div className={styles.bottomInterface}>
         {colors.map(color => (
-          <div className={styles.color} style={{backgroundColor: (color.hex)}} onClick={() => setSelectedColor(color.name)}>
+          <div className={styles.color} style={{backgroundColor: (color.hex)}} onClick={() => setSelectedColor(color.hex)}>
             {selectedColor === color.name && (
               <FaCheck className={styles.selectedColor}/>
             )}

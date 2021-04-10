@@ -1,5 +1,6 @@
 import express from 'express';
 import path from 'path';
+import { Server } from 'socket.io';
 
 // Setup Express
 const app = express();
@@ -36,14 +37,20 @@ if (process.env.NODE_ENV === 'production') {
 }
 
 // WebSocket Portion
-const wsServer = app.listen(port + 2, 'localhost',
+const wsServerPort = process.env.SOCKET_PORT || 4001;
+const wsServer = app.listen(wsServerPort, 'localhost',
 function () {
     var host = wsServer.address().address;
     var port = wsServer.address().port;
     console.log('Websocket server listening at http://%s:%s', host, port);
 });
 
-const io = require('socket.io')(wsServer);
+const io = new Server(wsServer,
+    {
+        cors: {
+          origin: "*"
+        }
+      });
 
 // Register a callback function to run when we have an individual connection
 // This is run for each individual user that connects
@@ -54,13 +61,13 @@ io.sockets.on('connection',
     console.log("We have a new client: " + socket.id);
   
     // When this user emits, client side: socket.emit('otherevent',some data);
-    socket.on('mouse',
+    socket.on('paths',
       function(data) {
         // Data comes in as whatever was sent, including objects
-        console.log("Received: 'mouse' " + data.x + " " + data.y);
+        console.log("Received: 'paths' " + JSON.stringify(data));
       
         // Send it to all other clients
-        socket.broadcast.emit('mouse', data);
+        socket.broadcast.emit('paths', data);
         
         // This is a way to send to everyone including sender
         // io.sockets.emit('message', "this goes to everyone");
