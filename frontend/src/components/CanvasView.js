@@ -14,10 +14,14 @@ function CanvasView({ color, stroke, clear, setClear, brush, setBrush, canvasWid
   const ENDPOINT = `http://${process.env.REACT_APP_SOCKET_ADDR}:${process.env.REACT_APP_SOCKET_PORT}`;
   let socket = socketIOClient(ENDPOINT);
 
+  let eraserPaths = [];
+
+  const bgColor = 255;
+
   socket.on('path', handlePath);
 
   function handlePath(data) {
-    if (!paths.includes(data)) {
+    if (!paths.includes(data) && data) {
       paths.push(data);
     }
   }
@@ -25,28 +29,49 @@ function CanvasView({ color, stroke, clear, setClear, brush, setBrush, canvasWid
   socket.on('shape', handleShape);
 
   function handleShape(data) {
-    if (!shapes.includes(data)) {
+    if (!shapes.includes(data) && data) {
       shapes.push(data);
     }
   }
+
+  socket.on('eraser', handleEraser);
+
+  function handleEraser(data) {
+    if (!eraserPaths.includes(data) && data) {
+      eraserPaths.push(data);
+    }
+  }
+
 
   const setup = (p5, canvasParentRef) => {
     // use parent to render the canvas in this ref
     // (without that p5 will render the canvas outside of your component)
     p5.createCanvas(canvasWidth, canvasHeight).parent(canvasParentRef);
-    p5.background(255);
+    p5.background(bgColor);
   };
 
-  function drawPaths(paths, p5) {
-    paths.forEach(path => {
-      p5.beginShape();
-      path.forEach(path => {
-        p5.stroke(path.color);
+  function drawEraser(paths, p5) {
+    if (paths && Array.isArray(paths)) {
+      paths.forEach(path => {
         p5.strokeWeight(path.weight);
-        p5.vertex(path.x, path.y);
+        p5.stroke(bgColor);
+        p5.line(path.x, path.y, path.pX, path.pY);
       });
-      p5.endShape();
-    });
+    }
+  }
+
+  function drawPaths(paths, p5) {
+    if (paths && Array.isArray(paths)) {
+      paths.forEach(path => {
+        p5.beginShape();
+        path.forEach(path => {
+          p5.stroke(path.color);
+          p5.strokeWeight(path.weight);
+          p5.vertex(path.x, path.y);
+        });
+        p5.endShape();
+      });
+    }
   }
 
   const draw = (p5) => {
@@ -65,7 +90,25 @@ function CanvasView({ color, stroke, clear, setClear, brush, setBrush, canvasWid
           currentPath.push(point);
         }
       }
+    } else if (brush === 'eraser') {
+      if (p5.mouseIsPressed) {
+
+        const eraser = {
+          x: p5.mouseX,
+          y: p5.mouseY,
+          pX: p5.pmouseX,
+          pY: p5.pmouseY,
+          weight: stroke * 3
+        }
+
+        if (!eraserPaths.includes(eraser)) {
+          eraserPaths.push(eraser);
+          socket.emit('eraser', eraser);
+        }
+      }
     }
+
+    drawEraser(eraserPaths, p5);
 
     drawPaths(paths, p5);
 
@@ -80,7 +123,7 @@ function CanvasView({ color, stroke, clear, setClear, brush, setBrush, canvasWid
       paths.splice(0);
       shapes.splice(0);
 
-      p5.background(255);
+      p5.background(bgColor);
 
       if (!paths || paths.length === 0) {
         setClear(false);
@@ -163,15 +206,10 @@ function CanvasView({ color, stroke, clear, setClear, brush, setBrush, canvasWid
       currentShape.width = Math.abs(currentShape.endX - currentShape.x);
       currentShape.height = Math.abs(currentShape.endY - currentShape.y);
 
-      if (currentShape.shape === "rectangle"
-        || currentShape.shape === "circle"
-        || currentShape.shape === "triangle"
-      ) {
-        const currentShapeCopy = { ...currentShape };
-        if (!shapes.includes(currentShapeCopy)) {
-          shapes.push(currentShapeCopy);
-          socket.emit('shape', currentShapeCopy);
-        }
+      const currentShapeCopy = { ...currentShape };
+      if (!shapes.includes(currentShapeCopy)) {
+        shapes.push(currentShapeCopy);
+        socket.emit('shape', currentShapeCopy);
       }
     }
   }
