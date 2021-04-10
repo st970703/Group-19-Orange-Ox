@@ -61,18 +61,31 @@ io.sockets.on('connection',
     console.log("We have a new client: " + socket.id);
   
     // When this user emits, client side: socket.emit('otherevent',some data);
-    socket.on('paths',
+    socket.on('path',
       function(data) {
         // Data comes in as whatever was sent, including objects
-        console.log("Received: 'paths' " + JSON.stringify(data));
+        console.log("Received: 'path' " + JSON.stringify(data));
       
         // Send it to all other clients
-        socket.broadcast.emit('paths', data);
+        socket.broadcast.emit('path', data);
         
         // This is a way to send to everyone including sender
         // io.sockets.emit('message', "this goes to everyone");
       }
     );
+
+    socket.on('shape',
+    function(data) {
+      // Data comes in as whatever was sent, including objects
+      console.log("Received: 'shape' " + JSON.stringify(data));
+    
+      // Send it to all other clients
+      socket.broadcast.emit('shape', data);
+      
+      // This is a way to send to everyone including sender
+      // io.sockets.emit('message', "this goes to everyone");
+    }
+  );
     
     socket.on('disconnect', function() {
       console.log("Client has disconnected");

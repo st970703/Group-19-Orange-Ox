@@ -13,17 +13,21 @@ function CanvasView({ color, stroke, clear, setClear, brush, setBrush, canvasWid
 
   const ENDPOINT = `http://${process.env.REACT_APP_SOCKET_ADDR}:${process.env.REACT_APP_SOCKET_PORT}`;
   let socket = socketIOClient(ENDPOINT);
-  socket.on('paths', handlePaths);
 
-  function handlePaths(data) {
-    console.log('paths received ' + JSON.stringify(data));
-    
-    if (Array.isArray(data)) {
-      data.forEach(path => {
-        paths.push(path);
-      });
+  socket.on('path', handlePath);
+
+  function handlePath(data) {
+    if (!paths.includes(data)) {
+      paths.push(data);
     }
+  }
 
+  socket.on('shape', handleShape);
+
+  function handleShape(data) {
+    if (!shapes.includes(data)) {
+      shapes.push(data);
+    }
   }
 
   const setup = (p5, canvasParentRef) => {
@@ -33,8 +37,17 @@ function CanvasView({ color, stroke, clear, setClear, brush, setBrush, canvasWid
     p5.background(255);
   };
 
-
-
+  function drawPaths(paths, p5) {
+    paths.forEach(path => {
+      p5.beginShape();
+      path.forEach(path => {
+        p5.stroke(path.color);
+        p5.strokeWeight(path.weight);
+        p5.vertex(path.x, path.y);
+      });
+      p5.endShape();
+    });
+  }
 
   const draw = (p5) => {
     p5.noFill();
@@ -47,21 +60,19 @@ function CanvasView({ color, stroke, clear, setClear, brush, setBrush, canvasWid
           color: color,
           weight: stroke
         };
-        currentPath.push(point);
-      }
 
-      paths.forEach(path => {
-        p5.beginShape();
-        path.forEach(path => {
-          p5.stroke(path.color);
-          p5.strokeWeight(path.weight);
-          p5.vertex(path.x, path.y);
-        });
-        p5.endShape();
-      });
+        if (!currentPath.includes(point)) {
+          currentPath.push(point);
+        }
+      }
     }
 
+    drawPaths(paths, p5);
+
+    shapes.forEach(shape => drawP5Shape(shape, p5));
+
     if (clear) {
+      console.log('Clearing canvas');
       socket.emit('clear', null);
 
       p5.clear();
@@ -80,12 +91,11 @@ function CanvasView({ color, stroke, clear, setClear, brush, setBrush, canvasWid
 
   const mousePressed = (p5) => {
     if (brush === 'pen') {
-      socket.emit('paths', currentPath);
-
       currentPath = [];
 
-      paths.push(currentPath);
-
+      if (!paths.includes(currentPath)) {
+        paths.push(currentPath);
+      }
     } else if (
       brush === 'circle'
       || brush === 'rectangle'
@@ -94,15 +104,57 @@ function CanvasView({ color, stroke, clear, setClear, brush, setBrush, canvasWid
       currentShape = {
         x: p5.mouseX,
         y: p5.mouseY,
+        color,
+        stroke,
+        shape: brush
       }
     }
   }
 
+  function drawP5Shape(shape, p5) {
+    if (shape) {
+      if (shape.shape === "rectangle") {
+        if (shape.y < shape.endY) {
+          p5.rect(shape.x, shape.y, shape.width, shape.height);
+        } else {
+          p5.rect(shape.endX, shape.endY, shape.width, shape.height);
+        }
+      } else if (shape.shape === "circle") {
+        if (shape.y < shape.endY) {
+          p5.circle(shape.x + (shape.width / 2), shape.y + (shape.height / 2), shape.width);
+        } else {
+          p5.circle(shape.endX + (shape.width / 2), shape.endY + (shape.height / 2), shape.width);
+        }
+      } else if (shape.shape === "triangle") {
+        if (shape.y < shape.endY) {
+          p5.triangle(
+            shape.x,
+            shape.y + shape.height,
+            shape.x + shape.width / 2,
+            shape.y,
+            shape.x + shape.width,
+            shape.y + shape.height
+          );
+        } else {
+          p5.triangle(
+            shape.endX,
+            shape.endY,
+            shape.endX + shape.width / 2,
+            shape.endY + shape.height,
+            shape.endX + shape.width,
+            shape.endY
+          );
+        }
+      }
+    }
+  }
 
   const mouseReleased = (p5) => {
-    p5.strokeWeight(stroke);
-    p5.stroke(color);
-
+    if (brush === 'pen') {
+      if (currentPath && currentPath.length > 0) {
+        socket.emit('path', currentPath);
+      }
+    }
 
     if (currentShape) {
       currentShape.endX = p5.mouseX;
@@ -111,48 +163,14 @@ function CanvasView({ color, stroke, clear, setClear, brush, setBrush, canvasWid
       currentShape.width = Math.abs(currentShape.endX - currentShape.x);
       currentShape.height = Math.abs(currentShape.endY - currentShape.y);
 
-      currentShape.color = color;
-      currentShape.stroke = stroke;
-
-      p5.strokeWeight(stroke);
-      p5.stroke(color);
-
-      if (brush === "rectangle") {
-        shapes.push(currentShape);
-        if (currentShape.y < currentShape.endY) {
-          p5.rect(currentShape.x, currentShape.y, currentShape.width, currentShape.height);
-        } else {
-          p5.rect(currentShape.endX, currentShape.endY, currentShape.width, currentShape.height);
-        }
-      } else if (brush === "circle") {
-        currentShape.diameter = currentShape.width;
-        shapes.push(currentShape);
-        if (currentShape.y < currentShape.endY) {
-          p5.circle(currentShape.x + (currentShape.width / 2), currentShape.y + (currentShape.height / 2), currentShape.width);
-        } else {
-          p5.circle(currentShape.endX + (currentShape.width / 2), currentShape.endY + (currentShape.height / 2), currentShape.width);
-        }
-      } else if (brush === "triangle") {
-        shapes.push(currentShape);
-
-        if (currentShape.y < currentShape.endY) {
-          p5.triangle(
-            currentShape.x,
-            currentShape.y + currentShape.height,
-            currentShape.x + currentShape.width / 2,
-            currentShape.y,
-            currentShape.x + currentShape.width,
-            currentShape.y + currentShape.height
-          );
-        } else {
-          p5.triangle(
-            currentShape.endX,
-            currentShape.endY,
-            currentShape.endX + currentShape.width / 2,
-            currentShape.endY + currentShape.height,
-            currentShape.endX + currentShape.width,
-            currentShape.endY
-          );
+      if (currentShape.shape === "rectangle"
+        || currentShape.shape === "circle"
+        || currentShape.shape === "triangle"
+      ) {
+        const currentShapeCopy = { ...currentShape };
+        if (!shapes.includes(currentShapeCopy)) {
+          shapes.push(currentShapeCopy);
+          socket.emit('shape', currentShapeCopy);
         }
       }
     }

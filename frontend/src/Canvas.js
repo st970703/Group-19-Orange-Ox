@@ -8,7 +8,7 @@ function Canvas() {
   const { userId, canvasId } = useParams();
   const [selectedColor, setSelectedColor] = useState('#000000');
   const [selectedBrush, setSelectedBrush] = useState('pen');
-  const [selectClear, setSelectClear] = useState('false');
+  const [selectClear, setSelectClear] = useState(false);
 
   const colors = [
     {
