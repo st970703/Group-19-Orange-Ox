@@ -126,7 +126,7 @@ function Canvas() {
       <div className={styles.bottomInterface}>
         {colors.map(color => (
           <div className={styles.color} style={{backgroundColor: (color.hex)}} onClick={() => setSelectedColor(color.hex)}>
-            {selectedColor === color.name && (
+            {selectedColor === color.hex && (
               <FaCheck className={styles.selectedColor}/>
             )}
           </div>
