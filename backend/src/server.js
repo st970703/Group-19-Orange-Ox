@@ -61,13 +61,13 @@ io.sockets.on('connection',
     console.log("We have a new client: " + socket.id);
 
     // When this user emits, client side: socket.emit('otherevent',some data);
-    socket.on('path',
+    socket.on('pen',
       function (data) {
         // Data comes in as whatever was sent, including objects
-        console.log("Received: 'path' " + data);
+        console.log("Received: 'pen' " + data);
 
         // Send it to all other clients
-        socket.broadcast.emit('path', data);
+        socket.broadcast.emit('pen', data);
 
         // This is a way to send to everyone including sender
         // io.sockets.emit('message', "this goes to everyone");
