@@ -36,15 +36,18 @@ const colors = [
 const brushes = [
     {
         brushType: 'pen',
-        icon: ''
+        icon: '',
+        stroke: 3
     },
     {
         brushType: 'large',
-        icon: ''
+        icon: '',
+        stroke: 16
     },
     {
         brushType: 'small',
-        icon: ''
+        icon: '',
+        stroke: 8
     },
     {
         brushType: 'paint',
@@ -52,19 +55,23 @@ const brushes = [
     },
     {
         brushType: 'eraser',
-        icon: ''
+        icon: '',
+        stroke: 9
     },
     {
         brushType: 'circle',
-        icon: ''
+        icon: '',
+        stroke: 3
     },
     {
         brushType: 'rectangle',
-        icon: ''
+        icon: '',
+        stroke: 3
     },
     {
         brushType: 'triangle',
-        icon: ''
+        icon: '',
+        stroke: 3
     }
 ];
 

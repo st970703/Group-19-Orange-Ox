@@ -31,7 +31,7 @@ function Canvas() {
         <CanvasView canvasWidth={canvasWidth}
           canvasHeight={canvasHeight}
           color={selectedColor}
-          stroke={3}
+          stroke={brushes.find(brush => brush.brushType === selectedBrush).stroke}
           clear={selectClear}
           setClear={setSelectClear}
           brush={selectedBrush}

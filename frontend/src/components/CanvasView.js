@@ -90,7 +90,11 @@ function CanvasView({ color, stroke, clear, setClear, brush, setBrush, canvasWid
   const draw = (p5) => {
     p5.noFill();
 
-    if (brush === 'pen') {
+    if (
+      brush === 'pen'
+      || brush === 'large'
+      || brush === 'small'
+    ) {
       if (p5.mouseIsPressed) {
         const point = {
           x: p5.mouseX,
@@ -110,7 +114,7 @@ function CanvasView({ color, stroke, clear, setClear, brush, setBrush, canvasWid
           y: p5.mouseY,
           pX: p5.pmouseX,
           pY: p5.pmouseY,
-          weight: stroke * 3,
+          weight: stroke,
           color: bgColor,
           brush
         }
@@ -144,7 +148,11 @@ function CanvasView({ color, stroke, clear, setClear, brush, setBrush, canvasWid
   }
 
   const mousePressed = (p5) => {
-    if (brush === 'pen') {
+    if (
+      brush === 'pen'
+      || brush === 'large'
+      || brush === 'small'
+    ) {
       resetPenPath();
       addPenPathToPaths();
     } else if (
@@ -165,9 +173,10 @@ function CanvasView({ color, stroke, clear, setClear, brush, setBrush, canvasWid
   }
 
   const mouseReleased = (p5) => {
-
-    if (brush === 'pen') {
-      emitData(brush);
+    if ( brush === 'pen'
+      || brush === 'large'
+      || brush === 'small' ) {
+      emitData('pen');
     } else if (
       brush === 'circle'
       || brush === 'rectangle'
