@@ -6,13 +6,18 @@ import {
   Link
 } from 'react-router-dom';
 import Account from './Account';
-import LogIn from './LogIn';
 import Friends from './Friends';
 import About from './About';
 import Canvas from './Canvas';
+import AuthenticationButton from './components/authentication-button';
+
+import { useAuth0 } from '@auth0/auth0-react';
+
 import './App.css';
 
-function App() {
+const App = () => {
+  const { isLoading } = useAuth0;
+
   return (
     <Router>
       <div className='root'>
@@ -30,7 +35,7 @@ function App() {
             <About />
           </Route>
           <Route path='/'>
-            <LogIn />
+            <AuthenticationButton />
           </Route>
         </Switch>
       </div>
