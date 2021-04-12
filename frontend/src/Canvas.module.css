@@ -1,16 +1,15 @@
 .canvas {
-  width: 100%;
-  height: 100%;
+  border: 1px solid black;
+  width: 1024px;
+  height: 768px;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
-  align-items: center;
-  padding: 40px 0;
+  justify-content: space-around;
+  align-content: space-around;
 }
 
 .topInterface {
   width: 100%;
-  height: 720px;
   display: flex;
   flex-direction: row;
   justify-content: space-around;
@@ -18,7 +17,7 @@
 }
 
 .toolbar {
-  width: 100px;
+  width: 48px;
   align-self: start;
   display: flex;
   flex-direction: column;
@@ -27,8 +26,8 @@
 }
 
 .toolbarButton {
-  height: 100px;
-  width: 100px;
+  height: 48px;
+  width: 48px;
   border: none;
   background-color: white;
   margin-bottom: 8px;
@@ -36,13 +35,13 @@
 }
 
 .toolbarButtonIcon {
-  height: 64px;
-  width: 64px;
+  height: 40px;
+  width: 40px;
 }
 
 .canvasBoard {
-  width: 960px;
-  height: 720px;
+  width: 800px;
+  height: 600px;
   background-color: white;
 }
 
@@ -53,17 +52,17 @@
 }
 
 .brushes {
-  width: 304px;
+  width: 144px;
   display: flex;
   flex-direction: row;
   justify-content: center;
-  align-items: start;
+  align-items: flex-start;
   flex-wrap: wrap;
 }
 
 .brush {
-  width: 144px;
-  height: 144px;
+  width: 64px;
+  height: 64px;
   background-color: #53DD6C;
   border-radius: 8px;
   margin: 4px;
@@ -73,12 +72,12 @@
 }
 
 .stickersButton {
-  width: 304px;
+  width: 144px;
   height: 72px;
   margin: 4px auto;
   border-radius: 8px;
   background-color: #AA3E98;
-  font-size: 32px;
+  font-size: 24px;
   font-weight: bold;
   display: flex;
   justify-content: center;
@@ -86,7 +85,7 @@
 }
 
 .bottomInterface {
-  height: 152px;
+  height: 112px;
   display: flex;
   flex-direction: row;
   justify-content: center;
@@ -94,9 +93,9 @@
 }
 
 .color {
-  height: 144px;
-  width: 144px;
-  margin: 4px;
+  height: 112px;
+  width: 112px;
+  margin: 0 4px;
   border-radius: 50%;
   display: flex;
   justify-content: center;

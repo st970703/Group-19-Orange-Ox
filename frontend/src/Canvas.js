@@ -85,6 +85,7 @@ function Canvas() {
           <button className={styles.toolbarButton}>
             <FaHome className={styles.toolbarButtonIcon} />
           </button>
+
           <button className={styles.toolbarButton}>
             <FaSave className={styles.toolbarButtonIcon} />
           </button>
@@ -94,13 +95,13 @@ function Canvas() {
           {
             // p5.js Canvas will go in here
             // Width: 960px, Height: 720px
-           }
+          }
         </div>
 
         <div className={styles.brushbar}>
           <div className={styles.brushes}>
-            {brushes.map(brush => (
-              <div className={styles.brush} onClick={() => setSelectedBrush(brush.brushType)} style={selectedBrush === brush.brushType ? {boxShadow: "0px 0px 0px 4px black inset"} : {}}>
+            {brushes.map((brush, i) => (
+              <div className={styles.brush} key={i} onClick={() => setSelectedBrush(brush.brushType)} style={selectedBrush === brush.brushType ? {boxShadow: "0px 0px 0px 4px black inset"} : {}}>
                 <p>{brush.brushType}</p>
               </div>
             ))}
@@ -114,8 +115,8 @@ function Canvas() {
       </div>
 
       <div className={styles.bottomInterface}>
-        {colors.map(color => (
-          <div className={styles.color} style={{backgroundColor: (color.hex)}} onClick={() => setSelectedColor(color.name)}>
+        {colors.map((color, i) => (
+          <div className={styles.color} key={i} style={{backgroundColor: (color.hex)}} onClick={() => setSelectedColor(color.name)}>
             {selectedColor === color.name && (
               <FaCheck className={styles.selectedColor}/>
             )}
