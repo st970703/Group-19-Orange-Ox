@@ -1,11 +1,20 @@
 .canvas {
-  border: 1px solid black;
   width: 1024px;
   height: 768px;
   display: flex;
   flex-direction: column;
   justify-content: space-around;
   align-content: space-around;
+}
+
+.disabled {
+  display: none;
+  background-color: #F1F9FF;
+  border-radius: 8px;
+  padding: 8px;
+  width: 300px;
+  align-self: center;
+  text-align: center;
 }
 
 .topInterface {
@@ -106,4 +115,18 @@
   color: white;
   width: 104px;
   height: 104px;
+}
+
+@media screen and (max-width: 1024px) {
+  .disabled {
+    display: block;
+  }
+
+  .topInterface {
+    display: none;
+  }
+
+  .bottomInterface {
+    display: none;
+  }
 }

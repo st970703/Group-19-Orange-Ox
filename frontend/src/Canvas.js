@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import {Link} from 'react-router-dom';
 import {useParams} from 'react-router-dom';
 import { FaHome, FaSave, FaCheck } from 'react-icons/fa';
 import styles from './Canvas.module.css';
@@ -80,6 +81,12 @@ function Canvas() {
 
   return (
     <div className={styles.canvas}>
+      <div className={styles.disabled}>
+        <h1>Uh Oh!</h1>
+        <p>Virtual Playground is not available for a screen this small</p>
+        <p>Please use a device with a larger screen!</p>
+        <Link to='/'>Return to Home</Link>
+      </div>
       <div className={styles.topInterface}>
         <div className={styles.toolbar}>
           <button className={styles.toolbarButton}>
