@@ -1,46 +1,25 @@
-import { React } from "react";
+import { React, useContext } from "react";
 import Sketch from "react-p5";
-import socketIOClient from "socket.io-client";
-
+import { CanvasContext } from '../context/CanvasContextProvider';
 
 function CanvasView({ color, stroke, clear, setClear, brush, setBrush, canvasWidth, canvasHeight }) {
 
-  let penPaths = [];
-  let currentPath = [];
-
-  const shapes = [];
-  let currentShape;
-
-  const ENDPOINT = `http://${process.env.REACT_APP_SOCKET_ADDR}:${process.env.REACT_APP_SOCKET_PORT}`;
-  let socket = socketIOClient(ENDPOINT);
-
-  let eraserPaths = [];
+  const {
+    penPaths,
+    shapes,
+    eraserPath,
+    addPenPoint,
+    resetPenPath,
+    addPenPathToPaths,
+    emitData,
+    addEraserPoint,
+    clearCanvas,
+    setCurrentShape,
+    setCurrentShapeEndCoord,
+    pushCurrentShapeToShapes
+  } = useContext(CanvasContext);
 
   const bgColor = 255;
-
-  socket.on('pen', handlePath);
-
-  function handlePath(data) {
-    if (!penPaths.includes(data) && data) {
-      penPaths.push(data);
-    }
-  }
-
-  socket.on('shape', handleShape);
-
-  function handleShape(data) {
-    if (!shapes.includes(data) && data) {
-      shapes.push(data);
-    }
-  }
-
-  socket.on('eraser', handleEraser);
-
-  function handleEraser(data) {
-    if (!eraserPaths.includes(data) && data) {
-      eraserPaths.push(data);
-    }
-  }
 
   const setup = (p5, canvasParentRef) => {
     // use parent to render the canvas in this ref
@@ -72,19 +51,19 @@ function CanvasView({ color, stroke, clear, setClear, brush, setBrush, canvasWid
       p5.stroke(shape.color);
       p5.strokeWeight(shape.weight);
 
-      if (shape.shape === "rectangle") {
+      if (shape.brush === "rectangle") {
         if (shape.y < shape.endY) {
           p5.rect(shape.x, shape.y, shape.width, shape.height);
         } else {
           p5.rect(shape.endX, shape.endY, shape.width, shape.height);
         }
-      } else if (shape.shape === "circle") {
+      } else if (shape.brush === "circle") {
         if (shape.y < shape.endY) {
           p5.circle(shape.x + (shape.width / 2), shape.y + (shape.height / 2), shape.width);
         } else {
           p5.circle(shape.endX + (shape.width / 2), shape.endY + (shape.height / 2), shape.width);
         }
-      } else if (shape.shape === "triangle") {
+      } else if (shape.brush === "triangle") {
         if (shape.y < shape.endY) {
           p5.triangle(
             shape.x,
@@ -116,30 +95,28 @@ function CanvasView({ color, stroke, clear, setClear, brush, setBrush, canvasWid
         const point = {
           x: p5.mouseX,
           y: p5.mouseY,
-          color: color,
-          weight: stroke
+          color,
+          weight: stroke,
+          brush
         };
 
-        if (!currentPath.includes(point)) {
-          currentPath.push(point);
-        }
+        addPenPoint(point);
       }
     } else if (brush === 'eraser') {
       if (p5.mouseIsPressed) {
 
-        const eraser = {
+        const point = {
           x: p5.mouseX,
           y: p5.mouseY,
           pX: p5.pmouseX,
           pY: p5.pmouseY,
           weight: stroke * 3,
-          color: bgColor
+          color: bgColor,
+          brush
         }
 
-        if (!eraserPaths.includes(eraser)) {
-          eraserPaths.push(eraser);
-          socket.emit('eraser', eraser);
-        }
+        addEraserPoint(point);
+        emitData('eraser');
       }
     }
 
@@ -151,72 +128,56 @@ function CanvasView({ color, stroke, clear, setClear, brush, setBrush, canvasWid
       shapes.forEach(shape => drawP5Shape(shape, p5));
     }
 
-    if (eraserPaths && eraserPaths.length > 0) {
-      eraserPaths.forEach(eraserPath => drawEraser(eraserPath, p5));
+    if (eraserPath && eraserPath.length > 0) {
+      eraserPath.forEach(point => drawEraser(point, p5));
     }
 
     if (clear) {
-      console.log('Clearing canvas');
-      socket.emit('clear', null);
-
       p5.clear();
-
-      penPaths.splice(0);
-      shapes.splice(0);
-
       p5.background(bgColor);
+      clearCanvas();
 
-      if (!penPaths || penPaths.length === 0) {
-        setClear(false);
-        setBrush(null);
-      }
+      setClear(false);
+
+      setBrush(null);
     }
   }
 
   const mousePressed = (p5) => {
     if (brush === 'pen') {
-      currentPath = [];
-
-      if (!penPaths.includes(currentPath)) {
-        penPaths.push(currentPath);
-      }
+      resetPenPath();
+      addPenPathToPaths();
     } else if (
       brush === 'circle'
       || brush === 'rectangle'
       || brush === 'triangle'
     ) {
-      currentShape = {
+      const shape = {
         x: p5.mouseX,
         y: p5.mouseY,
         color,
         weight: stroke,
-        shape: brush
+        brush
       }
+
+      setCurrentShape(shape);
     }
   }
 
   const mouseReleased = (p5) => {
+
     if (brush === 'pen') {
-      if (currentPath && currentPath.length > 0) {
-        socket.emit('pen', currentPath);
-      }
+      emitData(brush);
     } else if (
       brush === 'circle'
       || brush === 'rectangle'
       || brush === 'triangle'
     ) {
-      currentShape.endX = p5.mouseX;
-      currentShape.endY = p5.mouseY;
+      setCurrentShapeEndCoord(p5.mouseX, p5.mouseY);
 
-      currentShape.width = Math.abs(currentShape.endX - currentShape.x);
-      currentShape.height = Math.abs(currentShape.endY - currentShape.y);
+      pushCurrentShapeToShapes();
 
-      const currentShapeCopy = { ...currentShape };
-      if (!shapes.includes(currentShapeCopy)) {
-        shapes.push(currentShapeCopy);
-
-        socket.emit('shape', currentShapeCopy);
-      }
+      emitData('shape');
     }
   }
 
