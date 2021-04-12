@@ -139,11 +139,13 @@ function CanvasView({ color, stroke, clear, setClear, brush, setBrush, canvasWid
     if (clear) {
       p5.clear();
       p5.background(bgColor);
+
       clearCanvas();
+      emitData('clear');
 
       setClear(false);
 
-      setBrush(null);
+      setBrush('pen');
     }
   }
 
@@ -173,9 +175,9 @@ function CanvasView({ color, stroke, clear, setClear, brush, setBrush, canvasWid
   }
 
   const mouseReleased = (p5) => {
-    if ( brush === 'pen'
+    if (brush === 'pen'
       || brush === 'large'
-      || brush === 'small' ) {
+      || brush === 'small') {
       emitData('pen');
     } else if (
       brush === 'circle'

@@ -40,6 +40,12 @@ function CanvasContextProvider({ children }) {
         }
     }
 
+    socket.on('clear', handleClear);
+
+    function handleClear() {
+        clearCanvas();
+    }
+
     let currentPenPath = [];
     let currentShape;
     let currentEraserPoint;
@@ -75,6 +81,8 @@ function CanvasContextProvider({ children }) {
             if (currentEraserPoint) {
                 socket.emit('eraser', currentEraserPoint);
             }
+        } else if (type === 'clear') {
+            socket.emit('clear');
         }
     }
 
@@ -87,11 +95,14 @@ function CanvasContextProvider({ children }) {
 
     function clearCanvas() {
         console.log('Clearing canvas');
-        socket.emit('clear', null);
 
         penPaths.splice(0);
         shapes.splice(0);
         eraserPath.splice(0);
+
+        currentPenPath = [];
+        currentShape = null;
+        currentEraserPoint = null;
     }
 
     function setCurrentShape(shape) {

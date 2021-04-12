@@ -12,6 +12,7 @@ function Canvas() {
   );
   const [selectedBrush, setSelectedBrush] = useState('pen');
   const [selectClear, setSelectClear] = useState(false);
+  const [selectSave, setSelectSave] = useState(false);
 
   const canvasWidth = 960;
   const canvasHeight = 720;
@@ -23,8 +24,13 @@ function Canvas() {
           <button className={styles.toolbarButton}>
             <FaHome className={styles.toolbarButtonIcon} />
           </button>
-          <button className={styles.toolbarButton}>
+          <button className={styles.toolbarButton}
+            onClick={() => setSelectSave(true)}>
             <FaSave className={styles.toolbarButtonIcon} />
+          </button>
+          <button className={styles.toolbarButton}
+            onClick={() => setSelectClear(true)}>
+            Clear
           </button>
         </div>
 
