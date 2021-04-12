@@ -66,11 +66,13 @@ function CanvasContextProvider({ children }) {
                 socket.emit('pen', currentPenPath);
             }
         } else if (type === 'shape') {
-            if (shapes && shapes.length > 0) {
+            if (currentShape
+                && currentShape.width > 0
+                && currentShape.height > 0) {
                 socket.emit('shape', currentShape);
             }
         } else if (type === 'eraser') {
-            if (eraserPath && eraserPath.length > 0) {
+            if (currentEraserPoint) {
                 socket.emit('eraser', currentEraserPoint);
             }
         }
@@ -109,11 +111,15 @@ function CanvasContextProvider({ children }) {
     }
 
     function pushCurrentShapeToShapes() {
-        if (currentShape) {
+        if (currentShape
+            && currentShape.width > 0
+            && currentShape.height > 0) {
             const currentShapeCopy = { ...currentShape };
             if (!shapes.includes(currentShapeCopy)) {
                 shapes.push(currentShapeCopy);
             }
+        } else {
+            currentShape = null;
         }
     }
 
