@@ -17,7 +17,7 @@ ReactDOM.render(
         </CanvasContextProvider>
       </Auth0ProviderWithHistory>
     </Router>
-  </React.StrictMode>,
+z  </React.StrictMode>,
   document.getElementById('root')
 );
 
