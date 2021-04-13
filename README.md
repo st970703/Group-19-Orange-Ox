@@ -24,6 +24,9 @@ npm install
 ```
 npm install
 ```
+* create a ```.env ``` file in the frontend directory.
+use the [.env.example](./frontend/.env.example) file as an example.
+
 
 ### Running
 
@@ -37,7 +40,8 @@ to run the frontend React App on port 3000.
 ```
 npm run start
 ```
-to run the backend Express server on port 3001.
+* to run the backend Express HTTP server on port 3001.
+* and the Express Websocket server on port 4001.
 
 ## Running the tests
 
