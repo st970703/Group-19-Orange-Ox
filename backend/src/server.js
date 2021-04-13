@@ -57,7 +57,6 @@ const io = new Server(wsServer,
 io.sockets.on('connection',
   // We are given a websocket object in our function
   function (socket) {
-
     console.log("We have a new client: " + socket.id);
 
     // When this user emits, client side: socket.emit('otherevent',some data);
@@ -99,6 +98,19 @@ io.sockets.on('connection',
         // io.sockets.emit('message', "this goes to everyone");
       }
     );
+
+    socket.on('clear',
+    function () {
+      // Data comes in as whatever was sent, including objects
+      console.log("Received: 'clear' ");
+
+      // Send it to all other clients
+      socket.broadcast.emit('clear');
+
+      // This is a way to send to everyone including sender
+      // io.sockets.emit('message', "this goes to everyone");
+    }
+  );
 
     socket.on('disconnect', function () {
       console.log("Client has disconnected");
