@@ -16,6 +16,15 @@ function CanvasContextProvider({ children }) {
     const ENDPOINT = `http://${process.env.REACT_APP_SOCKET_ADDR}:${process.env.REACT_APP_SOCKET_PORT}`;
     let socket = socketIOClient(ENDPOINT);
 
+    socket.on('loadCanvas', (canvasState) => {
+        console.log(canvasState);
+        for (let stroke of canvasState) {
+            if (stroke.brush === 'pen') penPaths.push(stroke.data);
+            else if (stroke.brush === 'shapes') shapes.push(stroke.data);
+            else if (stroke.brush === 'eraser') eraserPath.push(stroke.push);
+        }
+    });
+
     socket.on('pen', handlePath);
 
     function handlePath(data) {

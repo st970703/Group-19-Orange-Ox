@@ -52,6 +52,9 @@ const io = new Server(wsServer,
     }
   });
 
+// Testing canvas states stored in socket
+let canvasState = [];
+
 // Register a callback function to run when we have an individual connection
 // This is run for each individual user that connects
 io.sockets.on('connection',
@@ -59,11 +62,23 @@ io.sockets.on('connection',
   function (socket) {
     console.log("We have a new client: " + socket.id);
 
+
+    socket.emit('loadCanvas',
+      canvasState
+    );
+
     // When this user emits, client side: socket.emit('otherevent',some data);
     socket.on('pen',
       function (data) {
         // Data comes in as whatever was sent, including objects
         console.log("Received: 'pen' " + data);
+
+        canvasState.push(
+          {
+            brush: 'pen',
+            data: data
+          }
+        );
 
         // Send it to all other clients
         socket.broadcast.emit('pen', data);
@@ -78,6 +93,13 @@ io.sockets.on('connection',
         // Data comes in as whatever was sent, including objects
         console.log("Received: 'shape' " + data);
 
+        canvasState.push(
+          {
+            brush: 'shapes',
+            data: data
+          }
+        );
+
         // Send it to all other clients
         socket.broadcast.emit('shape', data);
 
@@ -91,6 +113,13 @@ io.sockets.on('connection',
         // Data comes in as whatever was sent, including objects
         console.log("Received: 'eraser' " + data);
 
+        canvasState.push(
+          {
+            brush: 'eraser',
+            data: data
+          }
+        );
+
         // Send it to all other clients
         socket.broadcast.emit('eraser', data);
 
@@ -103,6 +132,9 @@ io.sockets.on('connection',
     function () {
       // Data comes in as whatever was sent, including objects
       console.log("Received: 'clear' ");
+
+      canvasState = [];
+      console.log(canvasState);
 
       // Send it to all other clients
       socket.broadcast.emit('clear');
