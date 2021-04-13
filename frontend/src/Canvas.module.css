@@ -117,6 +117,23 @@
   height: 104px;
 }
 
+@media screen and (max-height: 700px) {
+  .bottomInterface {
+    height: 64px;
+  }
+
+  .color {
+    height: 64px;
+    width: 80px;
+    border-radius: 0;
+  }
+
+  .selectedColor {
+    width: 64px;
+    height: 64px;
+  }
+}
+
 @media screen and (max-width: 1024px) {
   .disabled {
     display: block;
