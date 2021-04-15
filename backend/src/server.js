@@ -100,20 +100,20 @@ io.sockets.on('connection',
     );
 
     socket.on('clear',
-    function () {
-      // Data comes in as whatever was sent, including objects
-      console.log("Received: 'clear' ");
+      function () {
+        // Data comes in as whatever was sent, including objects
+        console.log("Received: 'clear'");
 
-      // Send it to all other clients
-      socket.broadcast.emit('clear');
+        // Send it to all other clients
+        socket.broadcast.emit('clear');
 
-      // This is a way to send to everyone including sender
-      // io.sockets.emit('message', "this goes to everyone");
-    }
-  );
+        // This is a way to send to everyone including sender
+        // io.sockets.emit('message', "this goes to everyone");
+      }
+    );
 
     socket.on('disconnect', function () {
-      console.log("Client has disconnected");
+      console.log("Client " + socket.id + " has disconnected");
     });
   }
 );
