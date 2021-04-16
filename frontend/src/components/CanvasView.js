@@ -2,7 +2,7 @@ import { React, useContext } from "react";
 import Sketch from "react-p5";
 import { CanvasContext } from '../context/CanvasContextProvider';
 
-function CanvasView({ color, stroke, clear, setClear, brush, setBrush, canvasWidth, canvasHeight }) {
+function CanvasView({ color, stroke, brush, canvasWidth, canvasHeight }) {
 
   const {
     penPaths,
@@ -13,18 +13,24 @@ function CanvasView({ color, stroke, clear, setClear, brush, setBrush, canvasWid
     addPenPathToPaths,
     emitData,
     addEraserPoint,
-    clearCanvas,
+    clearDrawingData,
     setCurrentShape,
     setCurrentShapeEndCoord,
-    pushCurrentShapeToShapes
+    pushCurrentShapeToShapes,
+    save,
+    setSave,
+    clear,
+    setClear,
+    isCanvasBlank
   } = useContext(CanvasContext);
 
   const bgColor = 255;
+  let canvas = null;
 
   const setup = (p5, canvasParentRef) => {
     // use parent to render the canvas in this ref
     // (without that p5 will render the canvas outside of your component)
-    p5.createCanvas(canvasWidth, canvasHeight).parent(canvasParentRef);
+    canvas = p5.createCanvas(canvasWidth, canvasHeight).parent(canvasParentRef);
     p5.background(bgColor);
   };
 
@@ -37,13 +43,15 @@ function CanvasView({ color, stroke, clear, setClear, brush, setBrush, canvasWid
   }
 
   function drawPen(path, p5) {
-    p5.beginShape();
-    path.forEach(point => {
-      p5.stroke(point.color);
-      p5.strokeWeight(point.weight);
-      p5.vertex(point.x, point.y);
-    });
-    p5.endShape();
+    if (path && path.length > 0) {
+      p5.beginShape();
+      path.forEach(point => {
+        p5.stroke(point.color);
+        p5.strokeWeight(point.weight);
+        p5.vertex(point.x, point.y);
+      });
+      p5.endShape();
+    }
   }
 
   function drawP5Shape(shape, p5) {
@@ -136,16 +144,18 @@ function CanvasView({ color, stroke, clear, setClear, brush, setBrush, canvasWid
       eraserPath.forEach(point => drawEraser(point, p5));
     }
 
-    if (clear) {
+    if (clear && !isCanvasBlank()) {
+      clearDrawingData();
+
       p5.clear();
       p5.background(bgColor);
 
-      clearCanvas();
-      emitData('clear');
-
       setClear(false);
+    }
 
-      setBrush('pen');
+    if (save && !isCanvasBlank()) {
+      p5.save();
+      setSave(false);
     }
   }
 
@@ -186,9 +196,9 @@ function CanvasView({ color, stroke, clear, setClear, brush, setBrush, canvasWid
     ) {
       setCurrentShapeEndCoord(p5.mouseX, p5.mouseY);
 
-      pushCurrentShapeToShapes();
-
       emitData('shape');
+
+      pushCurrentShapeToShapes();
     }
   }
 

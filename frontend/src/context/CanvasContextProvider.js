@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import socketIOClient from "socket.io-client";
 
 const CanvasContext = React.createContext({
@@ -12,6 +12,8 @@ function CanvasContextProvider({ children }) {
     const penPaths = [];
     const shapes = [];
     const eraserPath = [];
+    const [save, setSave] = useState(false);
+    const [clear, setClear] = useState(false);
 
     const ENDPOINT = `http://${process.env.REACT_APP_SOCKET_ADDR}:${process.env.REACT_APP_SOCKET_PORT}`;
     let socket = socketIOClient(ENDPOINT);
@@ -43,7 +45,15 @@ function CanvasContextProvider({ children }) {
     socket.on('clear', handleClear);
 
     function handleClear() {
-        clearCanvas();
+        console.log('handleClear')
+
+        if (!clear
+            && (penPaths.length > 0
+                || shapes.length > 0
+                || eraserPath.length > 0)
+        ) {
+            setClear(true);
+        }
     }
 
     let currentPenPath = [];
@@ -87,18 +97,24 @@ function CanvasContextProvider({ children }) {
     }
 
     function addEraserPoint(point) {
-        if (!eraserPath.includes(point)) {
+        if (!eraserPath.includes(point) && point) {
             eraserPath.push(point);
             currentEraserPoint = point;
         }
     }
 
-    function clearCanvas() {
-        console.log('Clearing canvas');
+    function clearDrawingData() {
+        if (penPaths.length > 0) {
+            penPaths.splice(0);
+        }
 
-        penPaths.splice(0);
-        shapes.splice(0);
-        eraserPath.splice(0);
+        if (shapes.length > 0) {
+            shapes.splice(0);
+        }
+
+        if (eraserPath.length > 0) {
+            eraserPath.splice(0);
+        }
 
         currentPenPath = [];
         currentShape = null;
@@ -126,12 +142,28 @@ function CanvasContextProvider({ children }) {
             && currentShape.width > 0
             && currentShape.height > 0) {
             const currentShapeCopy = { ...currentShape };
+
             if (!shapes.includes(currentShapeCopy)) {
                 shapes.push(currentShapeCopy);
+                console.log('shapes.push = ' + currentShapeCopy);
             }
         } else {
             currentShape = null;
         }
+    }
+
+    function isCanvasBlank() {
+        // https://stackoverflow.com/questions/17386707/how-to-check-if-a-canvas-is-blank
+        const defaultCanvas = document.getElementById('defaultCanvas0');
+        const context = defaultCanvas.getContext('2d');
+
+        const pixelBuffer = new Uint32Array(
+            context.getImageData(0, 0, defaultCanvas.width, defaultCanvas.height).data.buffer
+        );
+
+        const blankPixelValue = 4294967295;
+
+        return !pixelBuffer.some(color => color !== blankPixelValue);
     }
 
     // The context value that will be supplied to any descendants of this component.
@@ -144,10 +176,15 @@ function CanvasContextProvider({ children }) {
         addPenPathToPaths,
         emitData,
         addEraserPoint,
-        clearCanvas,
+        clearDrawingData,
         setCurrentShape,
         setCurrentShapeEndCoord,
-        pushCurrentShapeToShapes
+        pushCurrentShapeToShapes,
+        save,
+        setSave,
+        clear,
+        setClear,
+        isCanvasBlank
     };
 
     // Wraps the given child components in a Provider for the above context.
