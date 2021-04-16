@@ -1,10 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { Link } from 'react-router-dom';
 import { useParams } from 'react-router-dom';
 import { FaHome, FaSave, FaCheck } from 'react-icons/fa';
 import styles from './Canvas.module.css';
 import CanvasView from './components/CanvasView';
 import { colors, brushes } from './config/CanvasConfig';
+import { CanvasContext } from './context/CanvasContextProvider';
 
 function Canvas() {
   const { userId, canvasId } = useParams();
@@ -12,11 +13,29 @@ function Canvas() {
     colors.find(color => color.name === 'black').hex
   );
   const [selectedBrush, setSelectedBrush] = useState('pen');
-  const [selectClear, setSelectClear] = useState(false);
-  const [selectSave, setSelectSave] = useState(false);
+
+  const {
+    setSave,
+    setClear,
+    emitData,
+    isCanvasBlank
+  } = useContext(CanvasContext);
 
   const canvasWidth = 960;
   const canvasHeight = 720;
+
+  function handleClear() {
+    if (!isCanvasBlank()) {
+      setClear(true);
+      emitData('clear');
+    }
+  }
+
+  function handleSave() {
+    if (!isCanvasBlank()) {
+      setSave(true);
+    }
+  }
 
   return (
     <div className={styles.canvas}>
@@ -33,12 +52,12 @@ function Canvas() {
           </button>
 
           <button className={styles.toolbarButton}
-            onClick={() => setSelectSave(true)}>
+            onClick={() => handleSave()}>
 
             <FaSave className={styles.toolbarButtonIcon} />
           </button>
           <button className={styles.toolbarButton}
-            onClick={() => setSelectClear(true)}>
+            onClick={() => handleClear()}>
             Clear
           </button>
         </div>
@@ -47,10 +66,7 @@ function Canvas() {
           canvasHeight={canvasHeight}
           color={selectedColor}
           stroke={brushes.find(brush => brush.brushType === selectedBrush).stroke}
-          clear={selectClear}
-          setClear={setSelectClear}
           brush={selectedBrush}
-          setBrush={setSelectedBrush}
         />
 
         <div className={styles.brushbar}>
