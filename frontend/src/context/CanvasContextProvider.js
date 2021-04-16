@@ -19,7 +19,6 @@ function CanvasContextProvider({ children }) {
     let socket = socketIOClient(ENDPOINT);
 
     socket.on('loadCanvas', (canvasState) => {
-        console.log(canvasState);
         for (let stroke of canvasState) {
             if (stroke.brush === 'pen') penPaths.push(stroke.data);
             else if (stroke.brush === 'shapes') shapes.push(stroke.data);
@@ -154,7 +153,6 @@ function CanvasContextProvider({ children }) {
 
             if (!shapes.includes(currentShapeCopy)) {
                 shapes.push(currentShapeCopy);
-                console.log('shapes.push = ' + currentShapeCopy);
             }
         } else {
             currentShape = null;

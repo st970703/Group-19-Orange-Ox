@@ -133,11 +133,11 @@ io.sockets.on('connection',
         // Data comes in as whatever was sent, including objects
         console.log("Received: 'clear'");
 
-      canvasState = [];
-      console.log(canvasState);
+        canvasState = [];
+        console.log(canvasState);
 
-      // Send it to all other clients
-      socket.broadcast.emit('clear');
+        // Send it to all other clients
+        socket.broadcast.emit('clear');
 
         // This is a way to send to everyone including sender
         // io.sockets.emit('message', "this goes to everyone");
