@@ -23,7 +23,7 @@ function CanvasContextProvider({ children }) {
         for (let stroke of canvasState) {
             if (stroke.brush === 'pen') penPaths.push(stroke.data);
             else if (stroke.brush === 'shapes') shapes.push(stroke.data);
-            else if (stroke.brush === 'eraser') eraserPath.push(stroke.push);
+            else if (stroke.brush === 'eraser') eraserPath.push(stroke.data);
         }
     });
 
