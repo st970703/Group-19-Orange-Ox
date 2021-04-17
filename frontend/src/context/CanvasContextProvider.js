@@ -1,72 +1,77 @@
 import React, { useState } from 'react';
 import socketIOClient from "socket.io-client";
+import { colors, brushes } from '../config/CanvasConfig';
 
 const CanvasContext = React.createContext({
-    penPaths: [],
-    shapes: [],
-    eraserPath: []
+    drawingData: []
 });
 
 function CanvasContextProvider({ children }) {
 
-    const penPaths = [];
-    const shapes = [];
-    const eraserPath = [];
+    const [color, setColor] = useState(
+        colors.find(color => color.name === 'black').hex
+    );
+    const [brush, setBrush] = useState('pen');
+    const [weight, setWeight] = useState(
+        brushes.find(brush => brush.brushType === 'pen').weight
+    );
+
+    let drawingData = [];
+
     const [save, setSave] = useState(false);
     const [clear, setClear] = useState(false);
 
-    const ENDPOINT = `http://${process.env.REACT_APP_SOCKET_ADDR}:${process.env.REACT_APP_SOCKET_PORT}`;
-    let socket = socketIOClient(ENDPOINT);
+    let currentPenPath = [];
+    let currentShape = null;
+    let currentEraser = null;
 
-    socket.on('loadCanvas', (canvasState) => {
-        for (let stroke of canvasState) {
-            if (stroke.brush === 'pen') penPaths.push(stroke.data);
-            else if (stroke.brush === 'shapes') shapes.push(stroke.data);
-            else if (stroke.brush === 'eraser') eraserPath.push(stroke.data);
+    const ENDPOINT = `http://${process.env.REACT_APP_SOCKET_ADDR}:${process.env.REACT_APP_SOCKET_PORT}`;
+    const socket = socketIOClient(ENDPOINT);
+
+    socket.on('initialCanvas', (canvasState) => {
+        for (let data of canvasState) {
+            if (Array.isArray(data)
+                || data.brush === 'circle'
+                || data.brush === 'rectangle'
+                || data.brush === 'triangle'
+                || data.brush === 'eraser') {
+                drawingData.push(data);
+            }
         }
     });
 
-    socket.on('pen', handlePath);
+    socket.on('pen', handlePen);
 
-    function handlePath(data) {
-        if (!penPaths.includes(data) && data) {
-            penPaths.push(data);
+    function handlePen(data) {
+        if (!drawingData.includes(data) && data) {
+            drawingData.push(data);
         }
     }
 
     socket.on('shape', handleShape);
 
     function handleShape(data) {
-        if (!shapes.includes(data) && data) {
-            shapes.push(data);
+        if (!drawingData.includes(data) && data) {
+            drawingData.push(data);
         }
     }
 
     socket.on('eraser', handleEraser);
 
     function handleEraser(data) {
-        if (!eraserPath.includes(data) && data) {
-            eraserPath.push(data);
+        if (!drawingData.includes(data) && data) {
+            drawingData.push(data);
         }
     }
 
     socket.on('clear', handleClear);
 
     function handleClear() {
-        console.log('handleClear')
-
         if (!clear
-            && (penPaths.length > 0
-                || shapes.length > 0
-                || eraserPath.length > 0)
-        ) {
+            || drawingData.length > 0) {
             setClear(true);
         }
     }
-
-    let currentPenPath = [];
-    let currentShape;
-    let currentEraserPoint;
 
     function addPenPoint(point) {
         if (point && !currentPenPath.includes(point)) {
@@ -78,9 +83,9 @@ function CanvasContextProvider({ children }) {
         currentPenPath = [];
     }
 
-    function addPenPathToPaths() {
-        if (!penPaths.includes(currentPenPath)) {
-            penPaths.push(currentPenPath);
+    function recordPenPath() {
+        if (!drawingData.includes(currentPenPath)) {
+            drawingData.push(currentPenPath);
         }
     }
 
@@ -96,8 +101,8 @@ function CanvasContextProvider({ children }) {
                 socket.emit('shape', currentShape);
             }
         } else if (type === 'eraser') {
-            if (currentEraserPoint) {
-                socket.emit('eraser', currentEraserPoint);
+            if (currentEraser) {
+                socket.emit('eraser', currentEraser);
             }
         } else if (type === 'clear') {
             socket.emit('clear');
@@ -105,28 +110,20 @@ function CanvasContextProvider({ children }) {
     }
 
     function addEraserPoint(point) {
-        if (!eraserPath.includes(point) && point) {
-            eraserPath.push(point);
-            currentEraserPoint = point;
+        if (!drawingData.includes(point) && point) {
+            drawingData.push(point);
+            currentEraser = point;
         }
     }
 
     function clearDrawingData() {
-        if (penPaths.length > 0) {
-            penPaths.splice(0);
-        }
-
-        if (shapes.length > 0) {
-            shapes.splice(0);
-        }
-
-        if (eraserPath.length > 0) {
-            eraserPath.splice(0);
+        if (drawingData.length > 0) {
+            drawingData.splice(0);
         }
 
         currentPenPath = [];
         currentShape = null;
-        currentEraserPoint = null;
+        currentEraser = null;
     }
 
     function setCurrentShape(shape) {
@@ -145,17 +142,15 @@ function CanvasContextProvider({ children }) {
         }
     }
 
-    function pushCurrentShapeToShapes() {
+    function recordCurrentShape() {
         if (currentShape
             && currentShape.width > 0
             && currentShape.height > 0) {
             const currentShapeCopy = { ...currentShape };
 
-            if (!shapes.includes(currentShapeCopy)) {
-                shapes.push(currentShapeCopy);
+            if (!drawingData.includes(currentShapeCopy)) {
+                drawingData.push(currentShapeCopy);
             }
-        } else {
-            currentShape = null;
         }
     }
 
@@ -169,29 +164,37 @@ function CanvasContextProvider({ children }) {
         );
 
         const blankPixelValue = 4294967295;
+        const isBlank = !pixelBuffer.some(color => color !== blankPixelValue);
 
-        return !pixelBuffer.some(color => color !== blankPixelValue);
+        return isBlank;
     }
 
     // The context value that will be supplied to any descendants of this component.
     const context = {
-        penPaths,
-        shapes,
-        eraserPath,
+        drawingData,
         addPenPoint,
         resetPenPath,
-        addPenPathToPaths,
+        recordPenPath,
         emitData,
         addEraserPoint,
         clearDrawingData,
         setCurrentShape,
         setCurrentShapeEndCoord,
-        pushCurrentShapeToShapes,
+        recordCurrentShape,
         save,
         setSave,
         clear,
         setClear,
-        isCanvasBlank
+        isCanvasBlank,
+        color,
+        setColor,
+        brush,
+        setBrush,
+        weight,
+        setWeight,
+        currentPenPath,
+        currentShape,
+        currentEraser
     };
 
     // Wraps the given child components in a Provider for the above context.

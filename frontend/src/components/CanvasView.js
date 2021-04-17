@@ -2,26 +2,27 @@ import { React, useContext } from "react";
 import Sketch from "react-p5";
 import { CanvasContext } from '../context/CanvasContextProvider';
 
-function CanvasView({ color, stroke, brush, canvasWidth, canvasHeight }) {
+function CanvasView({ canvasWidth, canvasHeight }) {
 
   const {
-    penPaths,
-    shapes,
-    eraserPath,
+    drawingData,
     addPenPoint,
     resetPenPath,
-    addPenPathToPaths,
+    recordPenPath,
     emitData,
     addEraserPoint,
     clearDrawingData,
     setCurrentShape,
     setCurrentShapeEndCoord,
-    pushCurrentShapeToShapes,
+    recordCurrentShape,
     save,
     setSave,
     clear,
     setClear,
-    isCanvasBlank
+    isCanvasBlank,
+    color,
+    brush,
+    weight
   } = useContext(CanvasContext);
 
   const bgColor = 255;
@@ -54,7 +55,7 @@ function CanvasView({ color, stroke, brush, canvasWidth, canvasHeight }) {
     }
   }
 
-  function drawP5Shape(shape, p5) {
+  function drawShape(shape, p5) {
     if (shape) {
       p5.stroke(shape.color);
       p5.strokeWeight(shape.weight);
@@ -108,7 +109,7 @@ function CanvasView({ color, stroke, brush, canvasWidth, canvasHeight }) {
           x: p5.mouseX,
           y: p5.mouseY,
           color,
-          weight: stroke,
+          weight,
           brush
         };
 
@@ -116,13 +117,12 @@ function CanvasView({ color, stroke, brush, canvasWidth, canvasHeight }) {
       }
     } else if (brush === 'eraser') {
       if (p5.mouseIsPressed) {
-
         const point = {
           x: p5.mouseX,
           y: p5.mouseY,
           pX: p5.pmouseX,
           pY: p5.pmouseY,
-          weight: stroke,
+          weight,
           color: bgColor,
           brush
         }
@@ -132,16 +132,21 @@ function CanvasView({ color, stroke, brush, canvasWidth, canvasHeight }) {
       }
     }
 
-    if (penPaths && penPaths.length > 0) {
-      penPaths.forEach(path => drawPen(path, p5));
-    }
-
-    if (shapes && shapes.length > 0) {
-      shapes.forEach(shape => drawP5Shape(shape, p5));
-    }
-
-    if (eraserPath && eraserPath.length > 0) {
-      eraserPath.forEach(point => drawEraser(point, p5));
+    if (drawingData.length > 0) {
+      for (const data of drawingData) {
+        if (Array.isArray(data)) {
+          // is 'pen'
+          drawPen(data, p5);
+        } else if (
+          data.brush === 'circle'
+          || data.brush === 'rectangle'
+          || data.brush === 'triangle'
+        ) {
+          drawShape(data, p5);
+        } else if (data.brush === 'eraser') {
+          drawEraser(data, p5);
+        }
+      }
     }
 
     if (clear && !isCanvasBlank()) {
@@ -166,7 +171,7 @@ function CanvasView({ color, stroke, brush, canvasWidth, canvasHeight }) {
       || brush === 'small'
     ) {
       resetPenPath();
-      addPenPathToPaths();
+      recordPenPath();
     } else if (
       brush === 'circle'
       || brush === 'rectangle'
@@ -176,7 +181,7 @@ function CanvasView({ color, stroke, brush, canvasWidth, canvasHeight }) {
         x: p5.mouseX,
         y: p5.mouseY,
         color,
-        weight: stroke,
+        weight,
         brush
       }
 
@@ -198,7 +203,7 @@ function CanvasView({ color, stroke, brush, canvasWidth, canvasHeight }) {
 
       emitData('shape');
 
-      pushCurrentShapeToShapes();
+      recordCurrentShape();
     }
   }
 

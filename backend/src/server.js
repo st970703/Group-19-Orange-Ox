@@ -2,6 +2,15 @@ import express from 'express';
 import path from 'path';
 import { Server } from 'socket.io';
 
+function removeElementFromArray(array, element) {
+  const index = array.indexOf(element);
+  if (index > -1) {
+    array = array.splice(element, 1);
+  }
+
+  return array;
+}
+
 // Setup Express
 const app = express();
 const port = process.env.PORT || 3001;
@@ -52,100 +61,106 @@ const io = new Server(wsServer,
     }
   });
 
-// Testing canvas states stored in socket
 let canvasState = [];
+let clients = [];
 
 // Register a callback function to run when we have an individual connection
 // This is run for each individual user that connects
 io.sockets.on('connection',
-  // We are given a websocket object in our function
   function (socket) {
-    console.log("We have a new client: " + socket.id);
+    if (!clients.includes(socket.id)) {
+      console.log("We have a new client: " + socket.id);
 
+      clients.push(socket.id);
 
-    socket.emit('loadCanvas',
-      canvasState
-    );
+      socket.emit('initialCanvas',
+        canvasState
+      );
 
-    // When this user emits, client side: socket.emit('otherevent',some data);
-    socket.on('pen',
-      function (data) {
-        // Data comes in as whatever was sent, including objects
-        console.log("Received: 'pen' " + data);
+      // When this user emits, client side: socket.emit('otherevent',some data);
+      socket.on('pen',
+        function (data) {
+          if (data) {
+            // Data comes in as whatever was sent, including objects
+            console.log("Received: 'pen' " + data);
 
-        canvasState.push(
-          {
-            brush: 'pen',
-            data: data
+            canvasState.push(data);
+
+            // Send it to all other clients
+            socket.broadcast.emit('pen', data);
+
+            // This is a way to send to everyone including sender
+            // io.sockets.emit('message', "this goes to everyone");
+          } else {
+            return;
           }
-        );
+        }
+      );
 
-        // Send it to all other clients
-        socket.broadcast.emit('pen', data);
+      socket.on('shape',
+        function (data) {
+          if (data) {
+            // Data comes in as whatever was sent, including objects
+            console.log("Received: 'shape' " + data);
 
-        // This is a way to send to everyone including sender
-        // io.sockets.emit('message', "this goes to everyone");
-      }
-    );
+            canvasState.push(data);
 
-    socket.on('shape',
-      function (data) {
-        // Data comes in as whatever was sent, including objects
-        console.log("Received: 'shape' " + data);
+            // Send it to all other clients
+            socket.broadcast.emit('shape', data);
 
-        canvasState.push(
-          {
-            brush: 'shapes',
-            data: data
+            // This is a way to send to everyone including sender
+            // io.sockets.emit('message', "this goes to everyone");
+          } else {
+            return;
           }
-        );
+        }
+      );
 
-        // Send it to all other clients
-        socket.broadcast.emit('shape', data);
+      socket.on('eraser',
+        function (data) {
+          if (data) {
+            // Data comes in as whatever was sent, including objects
+            console.log("Received: 'eraser' " + data);
 
-        // This is a way to send to everyone including sender
-        // io.sockets.emit('message', "this goes to everyone");
-      }
-    );
+            canvasState.push(data);
 
-    socket.on('eraser',
-      function (data) {
-        // Data comes in as whatever was sent, including objects
-        console.log("Received: 'eraser' " + data);
+            // Send it to all other clients
+            socket.broadcast.emit('eraser', data);
 
-        canvasState.push(
-          {
-            brush: 'eraser',
-            data: data
+            // This is a way to send to everyone including sender
+            // io.sockets.emit('message', "this goes to everyone");
+          } else {
+            return;
           }
-        );
+        }
+      );
 
-        // Send it to all other clients
-        socket.broadcast.emit('eraser', data);
+      socket.on('clear',
+        function () {
+          if (canvasState.length > 0) {
+            // Data comes in as whatever was sent, including objects
+            console.log("Received: 'clear'");
 
-        // This is a way to send to everyone including sender
-        // io.sockets.emit('message', "this goes to everyone");
-      }
-    );
+            canvasState.splice(0);
 
-    socket.on('clear',
-      function () {
-        // Data comes in as whatever was sent, including objects
-        console.log("Received: 'clear'");
+            // Send it to all other clients
+            socket.broadcast.emit('clear');
 
-        canvasState = [];
-        console.log(canvasState);
+            // This is a way to send to everyone including sender
+            // io.sockets.emit('message', "this goes to everyone");
+          } else {
+            return;
+          }
+        }
+      );
 
-        // Send it to all other clients
-        socket.broadcast.emit('clear');
+      socket.on('disconnect', function () {
+        console.log("Client " + socket.id + " has disconnected");
 
-        // This is a way to send to everyone including sender
-        // io.sockets.emit('message', "this goes to everyone");
-      }
-    );
-
-    socket.on('disconnect', function () {
-      console.log("Client " + socket.id + " has disconnected");
-    });
+        clients = removeElementFromArray(clients, socket.id);
+      });
+    } else {
+      return;
+    }
   }
 );
