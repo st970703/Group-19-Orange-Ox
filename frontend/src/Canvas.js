@@ -16,7 +16,7 @@ function Canvas() {
     setColor,
     brush,
     setBrush,
-    setWeight,
+    setWeight
   } = useContext(CanvasContext);
 
   const canvasWidth = 960;

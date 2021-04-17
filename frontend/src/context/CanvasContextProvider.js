@@ -67,8 +67,7 @@ function CanvasContextProvider({ children }) {
     socket.on('clear', handleClear);
 
     function handleClear() {
-        if (!clear
-            || drawingData.length > 0) {
+        if (!clear) {
             setClear(true);
         }
     }

@@ -113,7 +113,9 @@ function CanvasView({ canvasWidth, canvasHeight }) {
           brush
         };
 
-        addPenPoint(point);
+        if (point.x > 0 && point.y > 0) {
+          addPenPoint(point);
+        }
       }
     } else if (brush === 'eraser') {
       if (p5.mouseIsPressed) {
@@ -127,8 +129,10 @@ function CanvasView({ canvasWidth, canvasHeight }) {
           brush
         }
 
-        addEraserPoint(point);
-        emitData('eraser');
+        if (point.x > 0 && point.y > 0) {
+          addEraserPoint(point);
+          emitData('eraser');
+        }
       }
     }
 
@@ -185,11 +189,15 @@ function CanvasView({ canvasWidth, canvasHeight }) {
         brush
       }
 
-      setCurrentShape(shape);
+      if (shape.x > 0 && shape.y > 0) {
+        setCurrentShape(shape);
+      }
     }
   }
 
   const mouseReleased = (p5) => {
+    console.log('drawingData = ' + JSON.stringify(drawingData));
+
     if (brush === 'pen'
       || brush === 'large'
       || brush === 'small') {
