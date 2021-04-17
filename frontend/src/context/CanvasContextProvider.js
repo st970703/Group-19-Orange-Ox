@@ -30,11 +30,15 @@ function CanvasContextProvider({ children }) {
 
     socket.on('initialCanvas', (canvasState) => {
         for (let data of canvasState) {
-            if (Array.isArray(data)
+            if (
+                (Array.isArray(data)
+                    && data.length > 0
+                    && data !== [])
                 || data.brush === 'circle'
                 || data.brush === 'rectangle'
                 || data.brush === 'triangle'
-                || data.brush === 'eraser') {
+                || data.brush === 'eraser'
+            ) {
                 drawingData.push(data);
             }
         }

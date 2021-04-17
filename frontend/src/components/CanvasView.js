@@ -138,7 +138,11 @@ function CanvasView({ canvasWidth, canvasHeight }) {
 
     if (drawingData.length > 0) {
       for (const data of drawingData) {
-        if (Array.isArray(data)) {
+        if (
+          (Array.isArray(data)
+            && data.length > 0
+            && data !== [])
+        ) {
           // is 'pen'
           drawPen(data, p5);
         } else if (
