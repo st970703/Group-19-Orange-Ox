@@ -37,17 +37,17 @@ const brushes = [
     {
         brushType: 'pen',
         icon: '',
-        stroke: 3
+        weight: 3
     },
     {
         brushType: 'large',
         icon: '',
-        stroke: 16
+        weight: 16
     },
     {
         brushType: 'small',
         icon: '',
-        stroke: 8
+        weight: 8
     },
     {
         brushType: 'paint',
@@ -56,22 +56,22 @@ const brushes = [
     {
         brushType: 'eraser',
         icon: '',
-        stroke: 9
+        weight: 9
     },
     {
         brushType: 'circle',
         icon: '',
-        stroke: 3
+        weight: 3
     },
     {
         brushType: 'rectangle',
         icon: '',
-        stroke: 3
+        weight: 3
     },
     {
         brushType: 'triangle',
         icon: '',
-        stroke: 3
+        weight: 3
     }
 ];
 
