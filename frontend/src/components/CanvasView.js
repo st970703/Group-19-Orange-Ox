@@ -6,11 +6,8 @@ function CanvasView({ canvasWidth, canvasHeight }) {
 
   const {
     drawingData,
-    addPenPoint,
-    resetPenPath,
-    recordPenPath,
     emitData,
-    addEraserPoint,
+    addLinePoint,
     clearDrawingData,
     setCurrentShape,
     setCurrentShapeEndCoord,
@@ -35,23 +32,11 @@ function CanvasView({ canvasWidth, canvasHeight }) {
     p5.background(bgColor);
   };
 
-  function drawEraser(point, p5) {
+  function drawLine(point, p5) {
     if (point) {
       p5.stroke(point.color);
       p5.strokeWeight(point.weight);
       p5.line(point.x, point.y, point.pX, point.pY);
-    }
-  }
-
-  function drawPen(path, p5) {
-    if (path && path.length > 0) {
-      p5.beginShape();
-      path.forEach(point => {
-        p5.stroke(point.color);
-        p5.strokeWeight(point.weight);
-        p5.vertex(point.x, point.y);
-      });
-      p5.endShape();
     }
   }
 
@@ -108,13 +93,16 @@ function CanvasView({ canvasWidth, canvasHeight }) {
         const point = {
           x: p5.mouseX,
           y: p5.mouseY,
-          color,
+          pX: p5.pmouseX,
+          pY: p5.pmouseY,
           weight,
+          color,
           brush
-        };
+        }
 
         if (point.x > 0 && point.y > 0) {
-          addPenPoint(point);
+          addLinePoint(point);
+          emitData('pen');
         }
       }
     } else if (brush === 'eraser') {
@@ -130,7 +118,7 @@ function CanvasView({ canvasWidth, canvasHeight }) {
         }
 
         if (point.x > 0 && point.y > 0) {
-          addEraserPoint(point);
+          addLinePoint(point);
           emitData('eraser');
         }
       }
@@ -139,20 +127,18 @@ function CanvasView({ canvasWidth, canvasHeight }) {
     if (drawingData.length > 0) {
       for (const data of drawingData) {
         if (
-          (Array.isArray(data)
-            && data.length > 0
-            && data !== [])
+          data.brush === 'pen'
+          || data.brush === 'large'
+          || data.brush === 'small'
+          || data.brush === 'eraser'
         ) {
-          // is 'pen'
-          drawPen(data, p5);
+          drawLine(data, p5);
         } else if (
           data.brush === 'circle'
           || data.brush === 'rectangle'
           || data.brush === 'triangle'
         ) {
           drawShape(data, p5);
-        } else if (data.brush === 'eraser') {
-          drawEraser(data, p5);
         }
       }
     }
@@ -174,13 +160,6 @@ function CanvasView({ canvasWidth, canvasHeight }) {
 
   const mousePressed = (p5) => {
     if (
-      brush === 'pen'
-      || brush === 'large'
-      || brush === 'small'
-    ) {
-      resetPenPath();
-      recordPenPath();
-    } else if (
       brush === 'circle'
       || brush === 'rectangle'
       || brush === 'triangle'
@@ -200,13 +179,7 @@ function CanvasView({ canvasWidth, canvasHeight }) {
   }
 
   const mouseReleased = (p5) => {
-    console.log('drawingData = ' + JSON.stringify(drawingData));
-
-    if (brush === 'pen'
-      || brush === 'large'
-      || brush === 'small') {
-      emitData('pen');
-    } else if (
+    if (
       brush === 'circle'
       || brush === 'rectangle'
       || brush === 'triangle'

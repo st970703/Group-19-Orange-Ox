@@ -80,10 +80,9 @@ io.sockets.on('connection',
       // When this user emits, client side: socket.emit('otherevent',some data);
       socket.on('pen',
         function (data) {
-          if (data) {
-            // Data comes in as whatever was sent, including objects
-            console.log("Received: 'pen' " + data);
+          console.log("Received: 'pen' " + data);
 
+          if (data && !canvasState.includes(data)) {
             canvasState.push(data);
 
             // Send it to all other clients
@@ -99,10 +98,9 @@ io.sockets.on('connection',
 
       socket.on('shape',
         function (data) {
-          if (data) {
-            // Data comes in as whatever was sent, including objects
-            console.log("Received: 'shape' " + data);
+          console.log("Received: 'shape' " + data);
 
+          if (data && !canvasState.includes(data)) {
             canvasState.push(data);
 
             // Send it to all other clients
@@ -118,10 +116,9 @@ io.sockets.on('connection',
 
       socket.on('eraser',
         function (data) {
-          if (data) {
-            // Data comes in as whatever was sent, including objects
-            console.log("Received: 'eraser' " + data);
+          console.log("Received: 'eraser' " + data);
 
+          if (data && !canvasState.includes(data)) {
             canvasState.push(data);
 
             // Send it to all other clients
@@ -137,10 +134,9 @@ io.sockets.on('connection',
 
       socket.on('clear',
         function () {
-          if (canvasState.length > 0) {
-            // Data comes in as whatever was sent, including objects
-            console.log("Received: 'clear'");
+          console.log("Received: 'clear'");
 
+          if (canvasState.length > 0) {
             canvasState.splice(0);
 
             // Send it to all other clients

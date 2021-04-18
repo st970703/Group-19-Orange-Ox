@@ -21,7 +21,7 @@ function CanvasContextProvider({ children }) {
     const [save, setSave] = useState(false);
     const [clear, setClear] = useState(false);
 
-    let currentPenPath = [];
+    let currentPen = null;
     let currentShape = null;
     let currentEraser = null;
 
@@ -31,9 +31,9 @@ function CanvasContextProvider({ children }) {
     socket.on('initialCanvas', (canvasState) => {
         for (let data of canvasState) {
             if (
-                (Array.isArray(data)
-                    && data.length > 0
-                    && data !== [])
+                data.brush === 'pen'
+                || data.brush === 'large'
+                || data.brush === 'small'
                 || data.brush === 'circle'
                 || data.brush === 'rectangle'
                 || data.brush === 'triangle'
@@ -47,7 +47,12 @@ function CanvasContextProvider({ children }) {
     socket.on('pen', handlePen);
 
     function handlePen(data) {
-        if (!drawingData.includes(data) && data) {
+        if (
+            !drawingData.includes(data)
+            && (data.brush === 'pen'
+                || data.brush === 'large'
+                || data.brush === 'small')
+        ) {
             drawingData.push(data);
         }
     }
@@ -55,7 +60,12 @@ function CanvasContextProvider({ children }) {
     socket.on('shape', handleShape);
 
     function handleShape(data) {
-        if (!drawingData.includes(data) && data) {
+        if (
+            !drawingData.includes(data)
+            && (data.brush === 'circle'
+                || data.brush === 'rectangle'
+                || data.brush === 'triangle')
+        ) {
             drawingData.push(data);
         }
     }
@@ -63,7 +73,8 @@ function CanvasContextProvider({ children }) {
     socket.on('eraser', handleEraser);
 
     function handleEraser(data) {
-        if (!drawingData.includes(data) && data) {
+        if (!drawingData.includes(data)
+            && data.brush === 'eraser') {
             drawingData.push(data);
         }
     }
@@ -76,26 +87,10 @@ function CanvasContextProvider({ children }) {
         }
     }
 
-    function addPenPoint(point) {
-        if (point && !currentPenPath.includes(point)) {
-            currentPenPath.push(point);
-        }
-    }
-
-    function resetPenPath() {
-        currentPenPath = [];
-    }
-
-    function recordPenPath() {
-        if (!drawingData.includes(currentPenPath)) {
-            drawingData.push(currentPenPath);
-        }
-    }
-
     function emitData(type) {
         if (type === 'pen') {
-            if (currentPenPath && currentPenPath.length > 0) {
-                socket.emit('pen', currentPenPath);
+            if (currentPen) {
+                socket.emit('pen', currentPen);
             }
         } else if (type === 'shape') {
             if (currentShape
@@ -112,10 +107,19 @@ function CanvasContextProvider({ children }) {
         }
     }
 
-    function addEraserPoint(point) {
+    function addLinePoint(point) {
         if (!drawingData.includes(point) && point) {
             drawingData.push(point);
+        }
+
+        if (point.brush === 'eraser') {
             currentEraser = point;
+        } else if (
+            point.brush === 'pen'
+            || point.brush === 'large'
+            || point.brush === 'small'
+        ) {
+            currentPen = point;
         }
     }
 
@@ -124,7 +128,7 @@ function CanvasContextProvider({ children }) {
             drawingData.splice(0);
         }
 
-        currentPenPath = [];
+        currentPen = null;
         currentShape = null;
         currentEraser = null;
     }
@@ -149,10 +153,8 @@ function CanvasContextProvider({ children }) {
         if (currentShape
             && currentShape.width > 0
             && currentShape.height > 0) {
-            const currentShapeCopy = { ...currentShape };
-
-            if (!drawingData.includes(currentShapeCopy)) {
-                drawingData.push(currentShapeCopy);
+            if (!drawingData.includes(currentShape)) {
+                drawingData.push(currentShape);
             }
         }
     }
@@ -175,11 +177,8 @@ function CanvasContextProvider({ children }) {
     // The context value that will be supplied to any descendants of this component.
     const context = {
         drawingData,
-        addPenPoint,
-        resetPenPath,
-        recordPenPath,
         emitData,
-        addEraserPoint,
+        addLinePoint,
         clearDrawingData,
         setCurrentShape,
         setCurrentShapeEndCoord,
@@ -195,7 +194,7 @@ function CanvasContextProvider({ children }) {
         setBrush,
         weight,
         setWeight,
-        currentPenPath,
+        currentPen,
         currentShape,
         currentEraser
     };
