@@ -10,18 +10,22 @@ import Loading from './components/loading';
 import ProtectedRoute from "./auth/protected-route";
 import NavBar from './components/nav-bar';
 
-import './App.css';
+import { AppBar, CssBaseline, Divider, Drawer, IconButton, makeStyles, Typography } from '@material-ui/core';
+
 
 const App = () => {
   const { isLoading } = useAuth0;
-
   if (isLoading) {
     return <Loading />
   }
 
   return (
-      <div id="app" className="d-flex flex-column h-100">
-      <NavBar />
+    <Main />
+  );
+}
+
+/**
+ * <NavBar />
         <div className="mt-5">
           <Switch>
           <Route path='/' component={Main}>
@@ -32,8 +36,6 @@ const App = () => {
           </Route>
           </Switch>
         </div>
-      </div>
-  );
-}
+ */
 
 export default App;

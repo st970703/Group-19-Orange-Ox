@@ -6,8 +6,6 @@ import { BrowserRouter as Router } from 'react-router-dom';
 import Auth0ProviderWithHistory from './auth/auth0-provider-with-history';
 import { CanvasContextProvider } from './context/CanvasContextProvider';
 
-import './index.css';
-
 ReactDOM.render(
   <React.StrictMode>
     <Router>
@@ -17,7 +15,7 @@ ReactDOM.render(
         </CanvasContextProvider>
       </Auth0ProviderWithHistory>
     </Router>
-z  </React.StrictMode>,
+  </React.StrictMode>,
   document.getElementById('root')
 );
 
