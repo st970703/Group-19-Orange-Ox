@@ -23,7 +23,9 @@ function CanvasView({ canvasWidth, canvasHeight }) {
   } = useContext(CanvasContext);
 
   const bgColor = 255;
-  let canvas = null;
+  let canvas;
+  const minX = 0;
+  const minY = 0;
 
   const setup = (p5, canvasParentRef) => {
     // use parent to render the canvas in this ref
@@ -100,7 +102,7 @@ function CanvasView({ canvasWidth, canvasHeight }) {
           brush
         }
 
-        if (point.x > 0 && point.y > 0) {
+        if (point.x > minX && point.y > minY) {
           addLinePoint(point);
           emitData('pen');
         }
@@ -117,7 +119,7 @@ function CanvasView({ canvasWidth, canvasHeight }) {
           brush
         }
 
-        if (point.x > 0 && point.y > 0) {
+        if (point.x > minX && point.y > minY) {
           addLinePoint(point);
           emitData('eraser');
         }
@@ -172,7 +174,7 @@ function CanvasView({ canvasWidth, canvasHeight }) {
         brush
       }
 
-      if (shape.x > 0 && shape.y > 0) {
+      if (shape.x > minX && shape.y > minY) {
         setCurrentShape(shape);
       }
     }
