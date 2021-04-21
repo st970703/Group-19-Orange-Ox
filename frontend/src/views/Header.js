@@ -1,7 +1,7 @@
 import React from "react";
 import clsx from "clsx";
 import { makeStyles } from "@material-ui/styles";
-import { AppBar, CssBaseline, Toolbar, IconButton, Typography, Drawer, Divider, List } from '@material-ui/core';
+import { AppBar, CssBaseline, Toolbar, IconButton, Typography, Drawer, Divider, List, Container, Paper } from '@material-ui/core';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import MenuIcon from '@material-ui/icons/Menu';
 import listMenuItems from '../listMenuItems';
@@ -82,7 +82,7 @@ const useStyles = makeStyles((theme) => ({
       overflow: 'auto',
     },
     container: {
-      paddingTop: theme.spacing(4),
+      paddingTop: theme.spacing(12),
       paddingBottom: theme.spacing(4),
     },
     paper: {
@@ -136,6 +136,7 @@ const Header = () => {
         classes={{
           paper: clsx(classes.drawerPaper, !open && classes.drawerPaperClose),
         }}
+        style={{ display: 'flex' }}
         open={open}
       >
         <div className={classes.toolbarIcon}>
@@ -146,14 +147,18 @@ const Header = () => {
         <Divider />
         <List>{listMenuItems}</List>
       </Drawer>
-      <main>
-        <Switch>
-          <Route exact path='/' component={Home} />
-          <Route exact path='/about' component={About} />
-          <ProtectedRoute exact path='/profile' component={Profile} />
-          <ProtectedRoute exact path='/canvas' component={Canvas} />
-          <ProtectedRoute exact path='/friends' component={Friends} />
-        </Switch>
+      <main className={classes.content}>
+        <div className={classes.appBarSpacer}>
+          <Container className={classes.container}>
+            <Switch>
+              <Route exact path='/' component={Home} />
+              <Route exact path='/about' component={About} />
+              <ProtectedRoute exact path='/profile' component={Profile} />
+              <ProtectedRoute exact path='/canvas' component={Canvas} />
+              <ProtectedRoute exact path='/friends' component={Friends} />
+            </Switch>
+          </Container>
+        </div>
       </main>
     </div>
   );
