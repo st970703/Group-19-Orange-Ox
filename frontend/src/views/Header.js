@@ -7,6 +7,13 @@ import MenuIcon from '@material-ui/icons/Menu';
 import listMenuItems from '../listMenuItems';
 import AuthenticationButton from "../components/authentication-button";
 import { withRouter } from 'react-router-dom';
+import Home from "./Home";
+import About from "./About";
+import Canvas from "../Canvas";
+import Friends from "./Friends";
+import Profile from "./Profile";
+import { Switch, Route } from 'react-router-dom';
+import ProtectedRoute from "../auth/protected-route";
 
 const drawerWidth = 240;
 
@@ -139,6 +146,15 @@ const Header = () => {
         <Divider />
         <List>{listMenuItems}</List>
       </Drawer>
+      <main>
+        <Switch>
+          <Route exact path='/' component={Home} />
+          <Route exact path='/about' component={About} />
+          <ProtectedRoute exact path='/profile' component={Profile} />
+          <ProtectedRoute exact path='/canvas' component={Canvas} />
+          <ProtectedRoute exact path='/friends' component={Friends} />
+        </Switch>
+      </main>
     </div>
   );
 }
