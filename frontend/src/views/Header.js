@@ -1,12 +1,12 @@
 import React from "react";
 import clsx from "clsx";
 import { makeStyles } from "@material-ui/styles";
-import { AccountBox, AppBar, Badge, CssBaseline, Toolbar, IconButton, Typography, Drawer, Divider, List } from '@material-ui/core';
+import { AppBar, CssBaseline, Toolbar, IconButton, Typography, Drawer, Divider, List } from '@material-ui/core';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import MenuIcon from '@material-ui/icons/Menu';
-import NotificationsIcon from '@material-ui/icons/Notifications';
 import listMenuItems from '../listMenuItems';
-
+import AuthenticationButton from "../components/authentication-button";
+import { withRouter } from 'react-router-dom';
 
 const drawerWidth = 240;
 
@@ -61,7 +61,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const Main = () => {
+const Header = props => {
   const classes = useStyles();
 
   // Drawer Components
@@ -91,11 +91,7 @@ const Main = () => {
             <Typography component="h1" variant="h6" color="inherit" noWrap className={classes.title}>
               Menu
             </Typography>
-            <IconButton color="inherit">
-              <Badge badgeContent={4} color="secondary">
-                <NotificationsIcon /> 
-              </Badge>
-            </IconButton>
+            <AuthenticationButton />
           </Toolbar>
         </AppBar>
         <Drawer
@@ -116,4 +112,5 @@ const Main = () => {
       </div>
   );
 }
-export default Main;
+
+export default withRouter(Header);

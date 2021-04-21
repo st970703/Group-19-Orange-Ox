@@ -6,39 +6,42 @@ import BrushIcon from '@material-ui/icons/Brush';
 import HomeIcon from '@material-ui/icons/Home';
 import InfoIcon from '@material-ui/icons/Info';
 
+function ListItemLink(props) {
+    return <ListItem button component="a" {...props} />;
+}
 
 const listMenuItems = (
     <div>
-        <ListItem button>
+        <ListItemLink href="/">
             <ListItemIcon>
                 <HomeIcon />
             </ListItemIcon>
             <ListItemText primary="Home" />
-        </ListItem>
-        <ListItem button>
+        </ListItemLink>
+        <ListItemLink href="/about">
             <ListItemIcon>
                 <InfoIcon />
             </ListItemIcon>
             <ListItemText primary="About" />
-        </ListItem>
-        <ListItem button>
+        </ListItemLink>
+        <ListItemLink href="/profile">
             <ListItemIcon>
                 <AccountBoxIcon />
             </ListItemIcon>
             <ListItemText primary="Profile" />
-        </ListItem>
-        <ListItem button>
+        </ListItemLink>
+        <ListItemLink href="/canvas">
             <ListItemIcon>
                 <BrushIcon />
             </ListItemIcon>
             <ListItemText primary="Canvas" />
-        </ListItem>
-        <ListItem button>
+        </ListItemLink>
+        <ListItemLink href="/friends">
             <ListItemIcon>
                 <PeopleIcon />
             </ListItemIcon>
             <ListItemText primary="Friends" />
-        </ListItem>
+        </ListItemLink>
     </div>
 );
 
