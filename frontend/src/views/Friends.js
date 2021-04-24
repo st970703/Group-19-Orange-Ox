@@ -1,3 +1,4 @@
+import { Typography } from '@material-ui/core';
 import React from 'react';
 import { useParams } from 'react-router';
 
@@ -5,8 +6,12 @@ function Friends() {
   const {userId} = useParams();
   return (
     <div>
-      <h1>Friends</h1>
-      <p>User ID: {userId}</p>
+      <Typography variant="h3" gutterBottom>
+        Friends
+      </Typography>
+      <Typography variant="body1">
+        User ID: {userId}
+      </Typography>
     </div>
   );
 }

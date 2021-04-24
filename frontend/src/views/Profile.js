@@ -1,6 +1,7 @@
 import React from "react";
 import { useParams } from 'react-router';
 import { useAuth0 } from "@auth0/auth0-react";
+import { Typography } from "@material-ui/core";
 
 const Profile = () => {
   const { user } = useAuth0();
@@ -9,24 +10,32 @@ const Profile = () => {
 
   return (
     <div>        
-      <div className="row align-items-center profile-header">
-        <div className="col-md-2 mb-3">
+      <div>
+        <Typography variant="h3" gutterBottom>
+          Profile
+        </Typography>
+        <div>
           <img
             src={picture}
-            alt="Profile"
-            className="rounded-circle img-fluid profile-picture mb-3 mb-md-0"
+            alt="No Image Found :("
           />
         </div>
-        <div className="col-md text-center text-md-left">
-          <h2>{name}</h2>
-          <p className="lead text-muted">{email}</p>
+        <div>
+          <Typography variant="body1">
+            Name: {name}
+          </Typography>
+          <Typography variant="body1">
+            Email: {email}
+          </Typography>
         </div>
         <div>
-            <p>User ID: {userId}</p>
+            <Typography variant="body1">
+              User ID: {userId}
+            </Typography>
         </div>
       </div>
-      <div className="row">
-        <pre className="col-12 text-light bg-dark p-4">
+      <div>
+        <pre>
           {JSON.stringify(user, null, 2)}
         </pre>
       </div>
