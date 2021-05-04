@@ -1,7 +1,7 @@
 import React from "react";
 import clsx from "clsx";
 import { makeStyles } from "@material-ui/styles";
-import { AppBar, CssBaseline, Toolbar, IconButton, Typography, Drawer, Divider, List, Container, Paper } from '@material-ui/core';
+import { AppBar, CssBaseline, Toolbar, IconButton, Typography, Drawer, Divider, List, Container } from '@material-ui/core';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import MenuIcon from '@material-ui/icons/Menu';
 import listMenuItems from '../listMenuItems';
@@ -14,6 +14,7 @@ import Friends from "./Friends";
 import Profile from "./Profile";
 import { Switch, Route } from 'react-router-dom';
 import ProtectedRoute from "../auth/protected-route";
+import { FaChild } from 'react-icons/fa';
 
 const drawerWidth = 240;
 
@@ -128,7 +129,7 @@ const Header = () => {
             <MenuIcon />
           </IconButton>
           <Typography component="h1" variant="h6" color="inherit" noWrap className={classes.title}>
-            Virtual Playground
+            Virtual Playground <FaChild />
           </Typography>
           <IconButton color="inherit">
           </IconButton>
