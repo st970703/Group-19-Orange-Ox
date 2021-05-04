@@ -2,9 +2,9 @@ import React, { useContext } from 'react';
 import { Link } from 'react-router-dom';
 import { FaSave, FaCheck, FaRegTrashAlt } from 'react-icons/fa';
 import styles from './Canvas.module.css';
-import CanvasView from './components/CanvasView';
-import { colors, brushes } from './config/CanvasConfig';
-import { CanvasContext } from './context/CanvasContextProvider';
+import CanvasView from '../components/CanvasView';
+import { colors, brushes } from '../config/CanvasConfig';
+import { CanvasContext } from '../context/CanvasContextProvider';
 import Snackbar from '@material-ui/core/Snackbar';
 import Alert from '@material-ui/lab/Alert';
 

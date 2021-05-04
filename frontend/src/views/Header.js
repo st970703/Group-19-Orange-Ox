@@ -9,7 +9,7 @@ import AuthenticationButton from "../components/authentication-button";
 import { withRouter, useLocation } from 'react-router-dom';
 import Home from "./Home";
 import About from "./About";
-import Canvas from "../Canvas";
+import Canvas from "./Canvas";
 import Friends from "./Friends";
 import Profile from "./Profile";
 import { Switch, Route } from 'react-router-dom';
