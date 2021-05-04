@@ -8,6 +8,8 @@ import { CanvasContext } from '../context/CanvasContextProvider';
 import Snackbar from '@material-ui/core/Snackbar';
 import Alert from '@material-ui/lab/Alert';
 import Tooltip from '@material-ui/core/Tooltip';
+import { useMediaQuery } from 'react-responsive';
+import Box from '@material-ui/core/Box';
 
 
 function Canvas() {
@@ -32,9 +34,6 @@ function Canvas() {
 
     setOpenSBar(false);
   };
-
-  const canvasWidth = 960;
-  const canvasHeight = 720;
 
   function handleClear() {
     if (!isCanvasBlank()) {
@@ -62,68 +61,95 @@ function Canvas() {
     return str.charAt(0).toUpperCase() + str.slice(1);
   }
 
+  function getWindowDimensions() {
+    const { innerWidth: width, innerHeight: height } = window;
+    return {
+      width,
+      height
+    };
+  }
+
+  const { height, width } = getWindowDimensions();
+  const canvasWidth = 960;
+  const canvasHeight = canvasWidth / (16 / 9);
+
+  const isMobile = useMediaQuery({ query: `(max-width: 760px)` });
+  const SmallScreenMsg = <div className={styles.disabled}>
+    <h1>Uh Oh!</h1>
+    <p>Virtual Playground is not available for a screen this small 😥</p>
+    <p>Please use a device with a larger screen!</p>
+    <Link to='/'>Return to Home</Link>
+  </div>;
+
   return (
-    <div className={styles.canvas}>
+    <>
       <Snackbar open={openSBar} autoHideDuration={9000} onClose={handleClose}>
         <Alert onClose={handleClose} severity="error">
           Warning: You can NOT save or clear an empty canvas! 😥
-        </Alert>
+         </Alert>
       </Snackbar>
-      <div className={styles.disabled}>
-        <h1>Uh Oh!</h1>
-        <p>Virtual Playground is not available for a screen this small 😥</p>
-        <p>Please use a device with a larger screen!</p>
-        <Link to='/'>Return to Home</Link>
-      </div>
 
-      <div className={styles.topInterface}>
-        <div className={styles.toolbar}>
-          <Tooltip title="Save">
-            <button className={styles.toolbarButton}
-              onClick={() => handleSave()}>
-              <FaSave className={styles.toolbarButtonIcon} />
-            </button>
-          </Tooltip>
+      {isMobile ? SmallScreenMsg :
+        <>
+          <Box display="flex" flexDirection="row">
 
-          <Tooltip title="Clear">
-            <button className={styles.toolbarButton}
-              onClick={() => handleClear()}>
-              <FaRegTrashAlt className={styles.toolbarButtonIcon} />
-            </button>
-          </Tooltip>
-        </div>
+            <Box display="flex" flexDirection="column">
 
-        <CanvasView canvasWidth={canvasWidth}
-          canvasHeight={canvasHeight} />
+              <CanvasView canvasWidth={canvasWidth}
+                canvasHeight={canvasHeight} />
 
-        <div className={styles.brushbar}>
-          <div className={styles.brushes}>
-            {brushes.map((brush_i, i) => (
-              <Tooltip title={capitalise(brush_i.brushType)}>
-                <div className={styles.brush} key={i}
-                  onClick={() => handleSetBrush(brush_i)}
-                  style={brush === brush_i.brushType ? { boxShadow: "0px 0px 0px 4px black inset" } : {}}>
-                  {brush_i.icon}
+              <Box display="flex" flexDirection="row"
+                justifyContent="center">
+                {colors.map((color_i, i) => (
+                  <div className={styles.color} key={i}
+                    style={{ backgroundColor: (color_i.hex) }}
+                    onClick={() => setColor(color_i.hex)}>
+                    {color === color_i.hex && (
+                      <FaCheck className={styles.selectedColor} />
+                    )}
+                  </div>
+                ))}
+              </Box>
+
+            </Box>
+
+            <Box display="flex" flexDirection="column" justifyContent="center">
+              <Box display="flex" flexDirection="row">
+                <Tooltip title="Save">
+                  <button className={styles.toolbarButton}
+                    onClick={() => handleSave()}>
+                    <FaSave className={styles.toolbarButtonIcon} />
+                  </button>
+                </Tooltip>
+
+                <Tooltip title="Clear">
+                  <button className={styles.toolbarButton}
+                    onClick={() => handleClear()}>
+                    <FaRegTrashAlt className={styles.toolbarButtonIcon} />
+                  </button>
+                </Tooltip>
+              </Box>
+
+              <div className={styles.brushbar}>
+                <div className={styles.brushes}>
+                  {brushes.map((brush_i, i) => (
+                    <Tooltip title={capitalise(brush_i.brushType)}>
+                      <div className={styles.brush} key={i}
+                        onClick={() => handleSetBrush(brush_i)}
+                        style={brush === brush_i.brushType ? { boxShadow: "0px 0px 0px 4px black inset" } : {}}>
+                        {brush_i.icon}
+                      </div>
+                    </Tooltip>
+                  ))}
                 </div>
-              </Tooltip>
-            ))}
-          </div>
-        </div>
-      </div>
+              </div>
 
-      <div className={styles.bottomInterface}>
-        {colors.map((color_i, i) => (
-          <div className={styles.color} key={i}
-            style={{ backgroundColor: (color_i.hex) }}
-            onClick={() => setColor(color_i.hex)}>
-            {color === color_i.hex && (
-              <FaCheck className={styles.selectedColor} />
-            )}
-          </div>
-        ))}
-      </div>
+            </Box>
 
-    </div>
+          </Box>
+
+        </>}
+    </>
   );
 }
 

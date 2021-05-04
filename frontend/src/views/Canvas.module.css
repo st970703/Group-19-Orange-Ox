@@ -35,12 +35,11 @@
 }
 
 .toolbarButton {
-  height: 48px;
-  width: 48px;
-  border: none;
-  background-color: white;
-  margin-bottom: 8px;
+  width: 64px;
+  height: 64px;
   border-radius: 8px;
+  margin: 4px;
+  background-color: white;
 }
 
 .toolbarButtonIcon {
@@ -102,8 +101,8 @@
 }
 
 .color {
-  height: 80px;
-  width: 80px;
+  height: 60px;
+  width: 60px;
   margin: 0 4px;
   border-radius: 50%;
   display: flex;
@@ -113,8 +112,8 @@
 
 .selectedColor {
   color: white;
-  width: 104px;
-  height: 104px;
+  width: 52px;
+  height: 52px;
 }
 
 @media screen and (max-height: 700px) {
@@ -129,8 +128,8 @@
   }
 
   .selectedColor {
-    width: 64px;
-    height: 64px;
+    width: 43px;
+    height: 43px;
   }
 }
 
