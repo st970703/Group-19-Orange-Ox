@@ -71,7 +71,7 @@ const brushes = [
     {
         brushType: 'eraser',
         icon: <FaEraser className={styles.toolbarButtonIcon} />,
-        weight: 9
+        weight: 12
     },
 ];
 
