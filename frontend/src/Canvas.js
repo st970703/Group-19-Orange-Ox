@@ -61,12 +61,12 @@ function Canvas() {
     <div className={styles.canvas}>
       <Snackbar open={openSBar} autoHideDuration={9000} onClose={handleClose}>
         <Alert onClose={handleClose} severity="error">
-          Warning: You can NOT save or clear an empty canvas!
+          Warning: You can NOT save or clear an empty canvas! 😥
         </Alert>
       </Snackbar>
       <div className={styles.disabled}>
         <h1>Uh Oh!</h1>
-        <p>Virtual Playground is not available for a screen this small</p>
+        <p>Virtual Playground is not available for a screen this small 😥</p>
         <p>Please use a device with a larger screen!</p>
         <Link to='/'>Return to Home</Link>
       </div>
