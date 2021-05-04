@@ -6,7 +6,7 @@ import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import MenuIcon from '@material-ui/icons/Menu';
 import listMenuItems from '../listMenuItems';
 import AuthenticationButton from "../components/authentication-button";
-import { withRouter } from 'react-router-dom';
+import { withRouter, useLocation } from 'react-router-dom';
 import Home from "./Home";
 import About from "./About";
 import Canvas from "../Canvas";
@@ -14,7 +14,6 @@ import Friends from "./Friends";
 import Profile from "./Profile";
 import { Switch, Route } from 'react-router-dom';
 import ProtectedRoute from "../auth/protected-route";
-import { useLocation } from 'react-router-dom';
 
 const drawerWidth = 240;
 
