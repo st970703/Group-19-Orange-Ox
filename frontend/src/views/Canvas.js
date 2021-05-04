@@ -100,13 +100,16 @@ function Canvas() {
               <Box display="flex" flexDirection="row"
                 justifyContent="center">
                 {colors.map((color_i, i) => (
-                  <div className={styles.color} key={i}
-                    style={{ backgroundColor: (color_i.hex) }}
-                    onClick={() => setColor(color_i.hex)}>
-                    {color === color_i.hex && (
-                      <FaCheck className={styles.selectedColor} />
-                    )}
-                  </div>
+                  <Tooltip title={capitalise(color_i.name)}
+                    key={capitalise(color_i.name) + "_tooltip"}>
+                    <div className={styles.color} key={i}
+                      style={{ backgroundColor: (color_i.hex) }}
+                      onClick={() => setColor(color_i.hex)}>
+                      {color === color_i.hex && (
+                        <FaCheck className={styles.selectedColor} />
+                      )}
+                    </div>
+                  </Tooltip>
                 ))}
               </Box>
 
@@ -133,7 +136,7 @@ function Canvas() {
                 <div className={styles.brushes}>
                   {brushes.map((brush_i, i) => (
                     <Tooltip title={capitalise(brush_i.brushType)}
-                      key={capitalise(brush_i.brushType)+"_tooltip"}>
+                      key={capitalise(brush_i.brushType) + "_tooltip"}>
                       <div className={styles.brush} key={i}
                         onClick={() => handleSetBrush(brush_i)}
                         style={brush === brush_i.brushType ?
