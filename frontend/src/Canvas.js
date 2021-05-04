@@ -50,10 +50,6 @@ function Canvas() {
       </div>
       <div className={styles.topInterface}>
         <div className={styles.toolbar}>
-          <button className={styles.toolbarButton}>
-            <FaHome className={styles.toolbarButtonIcon} />
-          </button>
-
           <button className={styles.toolbarButton}
             onClick={() => handleSave()}>
 
