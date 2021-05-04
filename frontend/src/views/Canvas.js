@@ -69,7 +69,6 @@ function Canvas() {
     };
   }
 
-  const { height, width } = getWindowDimensions();
   const canvasWidth = 960;
   const canvasHeight = canvasWidth / (16 / 9);
 
