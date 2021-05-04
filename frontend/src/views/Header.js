@@ -110,7 +110,6 @@ const Header = () => {
   const handleDrawerClose = () => {
     setOpen(false);
   };
-  const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);
 
   const pathname = useLocation().pathname;
 
