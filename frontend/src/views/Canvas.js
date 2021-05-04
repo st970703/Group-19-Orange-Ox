@@ -132,10 +132,12 @@ function Canvas() {
               <div className={styles.brushbar}>
                 <div className={styles.brushes}>
                   {brushes.map((brush_i, i) => (
-                    <Tooltip title={capitalise(brush_i.brushType)}>
+                    <Tooltip title={capitalise(brush_i.brushType)}
+                      key={capitalise(brush_i.brushType)+"_tooltip"}>
                       <div className={styles.brush} key={i}
                         onClick={() => handleSetBrush(brush_i)}
-                        style={brush === brush_i.brushType ? { boxShadow: "0px 0px 0px 4px black inset" } : {}}>
+                        style={brush === brush_i.brushType ?
+                          { boxShadow: "0px 0px 0px 4px black inset" } : {}}>
                         {brush_i.icon}
                       </div>
                     </Tooltip>
