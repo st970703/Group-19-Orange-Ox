@@ -1,6 +1,5 @@
-# Group-19-Orange-Ox
-
-SE750/CS732 Group-19-Orange-Ox
+# SE750/CS732 Group-19-Orange-Ox
+<img src="./frontend/src/img/orange-ox.svg" alt="Orange_ox_logo" height="90">
 
 ## Getting Started
 
