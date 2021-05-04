@@ -1,6 +1,7 @@
 import express from 'express';
 import path from 'path';
 import { Server } from 'socket.io';
+import connectToDatabase from './db/db-connect';
 
 function removeElementFromArray(array, element) {
   const index = array.indexOf(element);
@@ -22,15 +23,27 @@ const httpServer = app.listen(port, 'localhost',
     console.log('HTTP server listening at http://%s:%s', host, port);
   });
 
+connectToDatabase(process.env.MONGO_PASSWORD)
+  .then(() => {
+    console.log('Connected to DB');
+  });
+
 // Setup body-parser
 app.use(express.json());
+
+// Setup CORS access
+app.use((req, res, next) => {
+  res.header("Access-Control-Allow-Origin", "http://localhost:3000");
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  next();
+});
 
 // Make the "public" folder available statically
 app.use(express.static(path.join(__dirname, '../public')));
 
-app.get('/', (req, res) => {
-  res.send('Hello, World!');
-});
+// Setup routes
+import routes from './routes';
+app.use('/', routes);
 
 // Serve up the frontend's "build" directory, if we're running in production mode.
 if (process.env.NODE_ENV === 'production') {

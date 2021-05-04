@@ -2,10 +2,13 @@ import React from "react";
 import { useParams } from 'react-router';
 import { useAuth0 } from "@auth0/auth0-react";
 import { Typography } from "@material-ui/core";
+import {getUser} from '../hooks/userHooks';
 
 const Profile = () => {
   const { user } = useAuth0();
   const { name, picture, email } = user;
+  const {userData} = getUser(email);
+  console.log(userData);
   const { userId } = useParams();
 
   return (
