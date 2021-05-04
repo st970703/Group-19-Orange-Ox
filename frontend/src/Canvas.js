@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
 import { Link } from 'react-router-dom';
-import { FaHome, FaSave, FaCheck } from 'react-icons/fa';
+import { FaSave, FaCheck, FaRegTrashAlt } from 'react-icons/fa';
 import styles from './Canvas.module.css';
 import CanvasView from './components/CanvasView';
 import { colors, brushes } from './config/CanvasConfig';
@@ -52,12 +52,11 @@ function Canvas() {
         <div className={styles.toolbar}>
           <button className={styles.toolbarButton}
             onClick={() => handleSave()}>
-
             <FaSave className={styles.toolbarButtonIcon} />
           </button>
           <button className={styles.toolbarButton}
             onClick={() => handleClear()}>
-            Clear
+            <FaRegTrashAlt className={styles.toolbarButtonIcon} />
           </button>
         </div>
 
@@ -70,13 +69,9 @@ function Canvas() {
               <div className={styles.brush} key={i}
                 onClick={() => handleSetBrush(brush_i)}
                 style={brush === brush_i.brushType ? { boxShadow: "0px 0px 0px 4px black inset" } : {}}>
-                <p>{brush_i.brushType}</p>
+                {brush_i.icon}
               </div>
             ))}
-          </div>
-
-          <div className={styles.stickersButton}>
-            <p>Stickers</p>
           </div>
         </div>
       </div>
