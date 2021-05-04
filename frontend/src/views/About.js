@@ -33,7 +33,9 @@ function About() {
       </Typography>
 
       <Typography variant="body1" paragraph={true}>
-        <a href={"https://www.gnu.org/licenses/gpl-3.0.en.html"} target="_blank">
+        <a href={"https://www.gnu.org/licenses/gpl-3.0.en.html"}
+          target="_blank"
+          rel="noopener noreferrer">
           GNU General Public License v3.0</a>
       </Typography>
 
@@ -44,7 +46,8 @@ function About() {
       <IconButton aria-label="github_link"
         fontSize="large"
         href="https://github.com/st970703/Group-19-Orange-Ox"
-        target="_blank">
+        target="_blank"
+        rel="noopener noreferrer">
         <GitHubIcon style={{ fill: "black" }} />
       </IconButton>
     </div>
