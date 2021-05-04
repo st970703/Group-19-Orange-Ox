@@ -1,5 +1,7 @@
 import React from 'react';
 import { Typography } from '@material-ui/core';
+import painting_img from '../img/unsplash-painting.jpg';
+
 
 const Home = () => {
   return (
@@ -8,8 +10,10 @@ const Home = () => {
         Virtual Playground
       </Typography>
       <Typography variant="body1" gutterBottom>
-        Welcome kiddies!! (Placeholder text)
+        Welcome kiddies!! 😀
       </Typography>
+      <img src={painting_img} style={{ "height": "450px" }} alt="painting_image" />
+      <p>Image from Unsplash.com</p>
     </div>
   );
 }
