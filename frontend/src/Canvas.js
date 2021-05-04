@@ -5,6 +5,9 @@ import styles from './Canvas.module.css';
 import CanvasView from './components/CanvasView';
 import { colors, brushes } from './config/CanvasConfig';
 import { CanvasContext } from './context/CanvasContextProvider';
+import Snackbar from '@material-ui/core/Snackbar';
+import Alert from '@material-ui/lab/Alert';
+
 
 function Canvas() {
   const {
@@ -19,6 +22,16 @@ function Canvas() {
     setWeight
   } = useContext(CanvasContext);
 
+  const [openSBar, setOpenSBar] = React.useState(false);
+
+  const handleClose = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+
+    setOpenSBar(false);
+  };
+
   const canvasWidth = 960;
   const canvasHeight = 720;
 
@@ -26,12 +39,16 @@ function Canvas() {
     if (!isCanvasBlank()) {
       setClear(true);
       emitData('clear');
+    } else {
+      setOpenSBar(true);
     }
   }
 
   function handleSave() {
     if (!isCanvasBlank()) {
       setSave(true);
+    } else {
+      setOpenSBar(true);
     }
   }
 
@@ -42,6 +59,11 @@ function Canvas() {
 
   return (
     <div className={styles.canvas}>
+      <Snackbar open={openSBar} autoHideDuration={9000} onClose={handleClose}>
+        <Alert onClose={handleClose} severity="error">
+          Warning: You can NOT save or clear an empty canvas!
+        </Alert>
+      </Snackbar>
       <div className={styles.disabled}>
         <h1>Uh Oh!</h1>
         <p>Virtual Playground is not available for a screen this small</p>
