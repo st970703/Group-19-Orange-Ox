@@ -18,29 +18,33 @@ const listMenuItems = (
             </ListItemIcon>
             <ListItemText primary="Home" />
         </ListItemLink>
-        <ListItemLink href="/about">
-            <ListItemIcon>
-                <InfoIcon />
-            </ListItemIcon>
-            <ListItemText primary="About" />
-        </ListItemLink>
-        <ListItemLink href="/profile">
-            <ListItemIcon>
-                <AccountBoxIcon />
-            </ListItemIcon>
-            <ListItemText primary="Profile" />
-        </ListItemLink>
+
         <ListItemLink href="/canvas">
             <ListItemIcon>
                 <BrushIcon />
             </ListItemIcon>
             <ListItemText primary="Canvas" />
         </ListItemLink>
+
         <ListItemLink href="/friends">
             <ListItemIcon>
                 <PeopleIcon />
             </ListItemIcon>
             <ListItemText primary="Friends" />
+        </ListItemLink>
+        
+        <ListItemLink href="/profile">
+            <ListItemIcon>
+                <AccountBoxIcon />
+            </ListItemIcon>
+            <ListItemText primary="Profile" />
+        </ListItemLink>
+
+        <ListItemLink href="/about">
+            <ListItemIcon>
+                <InfoIcon />
+            </ListItemIcon>
+            <ListItemText primary="About" />
         </ListItemLink>
     </div>
 );
