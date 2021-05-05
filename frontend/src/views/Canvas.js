@@ -1,14 +1,16 @@
 import React, { useContext } from 'react';
-import { FaSave, FaCheck, FaRegTrashAlt } from 'react-icons/fa';
+import { FaSave, FaRegTrashAlt } from 'react-icons/fa';
 import styles from './Canvas.module.css';
 import CanvasView from '../components/CanvasView';
-import { colors, brushes } from '../config/CanvasConfig';
+import { brushes } from '../config/CanvasConfig';
 import { CanvasContext } from '../context/CanvasContextProvider';
 import Tooltip from '@material-ui/core/Tooltip';
 import { useMediaQuery } from 'react-responsive';
 import Box from '@material-ui/core/Box';
 import SmallScreenMsg from '../components/SmallScreenMsg';
 import WarningSnackBar from '../components/WarningSnackBar';
+import ColourBar from '../components/ColourBar';
+import { capitalise } from '../config/helperFunctions';
 
 
 function Canvas() {
@@ -17,8 +19,6 @@ function Canvas() {
     setSave,
     setClear,
     isCanvasBlank,
-    color,
-    setColor,
     brush,
     setBrush,
     setWeight
@@ -48,17 +48,6 @@ function Canvas() {
     setWeight(brush_i.weight);
   }
 
-  function capitalise(str) {
-    return str.charAt(0).toUpperCase() + str.slice(1);
-  }
-
-  function getWindowDimensions() {
-    const { innerWidth: width, innerHeight: height } = window;
-    return {
-      width,
-      height
-    };
-  }
 
   const canvasWidth = 960;
   const canvasHeight = canvasWidth / (16 / 9);
@@ -79,21 +68,7 @@ function Canvas() {
               <CanvasView canvasWidth={canvasWidth}
                 canvasHeight={canvasHeight} />
 
-              <Box display="flex" flexDirection="row"
-                justifyContent="center">
-                {colors.map((color_i, i) => (
-                  <Tooltip title={capitalise(color_i.name)}
-                    key={capitalise(color_i.name) + "_tooltip"}>
-                    <div className={styles.color} key={i}
-                      style={{ backgroundColor: (color_i.hex) }}
-                      onClick={() => setColor(color_i.hex)}>
-                      {color === color_i.hex && (
-                        <FaCheck className={styles.selectedColor} />
-                      )}
-                    </div>
-                  </Tooltip>
-                ))}
-              </Box>
+              <ColourBar />
 
             </Box>
 
