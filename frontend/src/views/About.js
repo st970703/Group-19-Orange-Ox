@@ -7,12 +7,16 @@ import IconButton from '@material-ui/core/IconButton';
 import GitHubIcon from '@material-ui/icons/GitHub';
 import PeopleIcon from '@material-ui/icons/People';
 import { FaGithubAlt, FaBalanceScale } from 'react-icons/fa';
+import InfoIcon from '@material-ui/icons/Info';
 
 
 function About() {
   return (
     <div>
-      <Typography variant="h3">
+      <Typography variant="h3" gutterBottom>
+        About <InfoIcon fontSize={'large'} />
+      </Typography>
+      <Typography variant="h4">
         Authors <PeopleIcon style={{ fill: "black" }} fontSize="large" />
       </Typography>
 
@@ -28,7 +32,7 @@ function About() {
         </Typography>
       </List>
 
-      <Typography variant="h3">
+      <Typography variant="h4" gutterBottom>
         License <FaBalanceScale size={30} />
       </Typography>
 
@@ -39,7 +43,7 @@ function About() {
           GNU General Public License v3.0</a>
       </Typography>
 
-      <Typography variant="h3">
+      <Typography variant="h4">
         GitHub Repository <FaGithubAlt size={35} />
       </Typography>
 

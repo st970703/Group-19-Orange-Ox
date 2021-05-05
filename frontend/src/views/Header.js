@@ -97,8 +97,6 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-
-
 const Header = () => {
   const classes = useStyles();
 
