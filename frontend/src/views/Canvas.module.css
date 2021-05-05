@@ -15,58 +15,10 @@
   align-items: center;
 }
 
-.toolbar {
-  width: 48px;
-  align-self: start;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  align-items: center;
-}
-
-.toolbarButton {
-  width: 64px;
-  height: 64px;
-  border-radius: 8px;
-  margin: 4px;
-  background-color: white;
-}
-
-.toolbarButtonIcon {
-  height: 40px;
-  width: 40px;
-}
-
 .canvasBoard {
   width: 800px;
   height: 600px;
   background-color: white;
-}
-
-.brushbar {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-}
-
-.brushes {
-  width: 144px;
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: flex-start;
-  flex-wrap: wrap;
-}
-
-.brush {
-  width: 64px;
-  height: 64px;
-  background-color: #53DD6C;
-  border-radius: 8px;
-  margin: 4px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
 }
 
 .stickersButton {
