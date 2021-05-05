@@ -37,7 +37,7 @@ function Canvas() {
   }
 
   const canvasWidth = 960;
-  const canvasHeight = canvasWidth / (16 / 9);
+  const canvasHeight = 529;
 
   const isMobile = useMediaQuery({ query: `(max-width: 760px)` });
 

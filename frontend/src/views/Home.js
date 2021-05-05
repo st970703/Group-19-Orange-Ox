@@ -13,7 +13,7 @@ const Home = () => {
       <Typography variant="body1" gutterBottom>
         Welcome kiddies!! 😀
       </Typography>
-      <img src={painting_img} style={{ "height": "450px" }} alt="painting_image" />
+      <img src={painting_img} style={{ "height": 425 }} alt="painting_image" />
       <p>*Image from <a href={"https://unsplash.com/"}
         target="_blank"
         rel="noopener noreferrer">Unsplash.com</a></p>
