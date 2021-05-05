@@ -5,7 +5,7 @@ import { useMediaQuery } from 'react-responsive';
 import Box from '@material-ui/core/Box';
 import SmallScreenMsg from '../components/SmallScreenMsg';
 import WarningSnackBar from '../components/WarningSnackBar';
-import Colourbar from '../components/Colourbar';
+import Colourbar from '../components/ColourBar';
 import Toolbar from '../components/Toolbar';
 
 
