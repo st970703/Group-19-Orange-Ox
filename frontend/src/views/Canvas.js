@@ -4,12 +4,11 @@ import styles from './Canvas.module.css';
 import CanvasView from '../components/CanvasView';
 import { colors, brushes } from '../config/CanvasConfig';
 import { CanvasContext } from '../context/CanvasContextProvider';
-import Snackbar from '@material-ui/core/Snackbar';
-import Alert from '@material-ui/lab/Alert';
 import Tooltip from '@material-ui/core/Tooltip';
 import { useMediaQuery } from 'react-responsive';
 import Box from '@material-ui/core/Box';
 import SmallScreenMsg from '../components/SmallScreenMsg';
+import WarningSnackBar from '../components/WarningSnackBar';
 
 
 function Canvas() {
@@ -26,14 +25,6 @@ function Canvas() {
   } = useContext(CanvasContext);
 
   const [openSBar, setOpenSBar] = React.useState(false);
-
-  const handleClose = (event, reason) => {
-    if (reason === 'clickaway') {
-      return;
-    }
-
-    setOpenSBar(false);
-  };
 
   function handleClear() {
     if (!isCanvasBlank()) {
@@ -77,11 +68,7 @@ function Canvas() {
 
   return (
     <>
-      <Snackbar open={openSBar} autoHideDuration={9000} onClose={handleClose}>
-        <Alert onClose={handleClose} severity="error">
-          Warning: You can NOT save or clear an empty canvas! 😥
-         </Alert>
-      </Snackbar>
+      <WarningSnackBar openSBar={openSBar} setOpenSBar={setOpenSBar} />
 
       {isMobile ? <SmallScreenMsg /> :
         <>
