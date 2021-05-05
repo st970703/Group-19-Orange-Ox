@@ -1,0 +1,32 @@
+.color {
+    height: 60px;
+    width: 60px;
+    margin: 0 4px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .selectedColor {
+    color: white;
+    width: 52px;
+    height: 52px;
+  }
+  
+  @media screen and (max-height: 700px) {
+    .bottomInterface {
+      height: 48px;
+    }
+  
+    .color {
+      height: 48px;
+      width: 80px;
+      border-radius: 0;
+    }
+  
+    .selectedColor {
+      width: 43px;
+      height: 43px;
+    }
+  }

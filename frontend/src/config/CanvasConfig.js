@@ -1,3 +1,7 @@
+import { FaPen, FaPaintBrush, FaPaintRoller, FaEraser, FaRegCircle, FaRegSquare } from 'react-icons/fa';
+import ChangeHistoryIcon from '@material-ui/icons/ChangeHistory';
+import styles from '../components/Toolbar.module.css';
+
 const colors = [
     {
         name: 'red',
@@ -36,43 +40,39 @@ const colors = [
 const brushes = [
     {
         brushType: 'pen',
-        icon: '',
-        weight: 3
+        icon: <FaPen className={styles.toolbarButtonIcon} />,
+        weight: 3,
     },
     {
         brushType: 'large',
-        icon: '',
+        icon: <FaPaintRoller className={styles.toolbarButtonIcon} />,
         weight: 16
     },
     {
         brushType: 'small',
-        icon: '',
+        icon: <FaPaintBrush className={styles.toolbarButtonIcon} />,
         weight: 8
     },
     {
-        brushType: 'paint',
-        icon: ''
-    },
-    {
-        brushType: 'eraser',
-        icon: '',
-        weight: 9
-    },
-    {
         brushType: 'circle',
-        icon: '',
+        icon: <FaRegCircle className={styles.toolbarButtonIcon} />,
         weight: 3
     },
     {
         brushType: 'rectangle',
-        icon: '',
+        icon: <FaRegSquare className={styles.toolbarButtonIcon} />,
         weight: 3
     },
     {
         brushType: 'triangle',
-        icon: '',
+        icon: <ChangeHistoryIcon style={{ fontSize: 50 }} />,
         weight: 3
-    }
+    },
+    {
+        brushType: 'eraser',
+        icon: <FaEraser className={styles.toolbarButtonIcon} />,
+        weight: 12
+    },
 ];
 
 export { colors, brushes };
