@@ -21,7 +21,10 @@ function Toolbar({ handleClear, handleSave }) {
     }
 
     return (
-        <Box display="flex" flexDirection="column" justifyContent="center">
+        <Box display="flex"
+            flexDirection="column"
+            justifyContent="center"
+            ml={2}>
             <Box display="flex" flexDirection="row">
                 <Tooltip title="Save">
                     <button className={styles.toolbarButton}
