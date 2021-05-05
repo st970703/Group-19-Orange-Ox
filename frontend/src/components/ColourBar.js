@@ -3,12 +3,12 @@ import { colors } from '../config/CanvasConfig';
 import Tooltip from '@material-ui/core/Tooltip';
 import { FaCheck } from 'react-icons/fa';
 import { capitalise } from '../config/helperFunctions';
-import styles from './ColourBar.module.css';
+import styles from './Colourbar.module.css';
 import { CanvasContext } from '../context/CanvasContextProvider';
 import React, { useContext } from 'react';
 
 
-function ColourBar() {
+function Colourbar() {
     const {
         color,
         setColor
@@ -33,4 +33,4 @@ function ColourBar() {
     );
 }
 
-export default ColourBar;
+export default Colourbar;
