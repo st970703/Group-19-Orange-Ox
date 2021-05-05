@@ -7,16 +7,6 @@
   align-content: space-around;
 }
 
-.disabled {
-  display: none;
-  background-color: #F1F9FF;
-  border-radius: 8px;
-  padding: 8px;
-  width: 300px;
-  align-self: center;
-  text-align: center;
-}
-
 .topInterface {
   width: 100%;
   display: flex;

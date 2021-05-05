@@ -1,0 +1,21 @@
+.disabled {
+    display: none;
+    background-color: #F1F9FF;
+    border-radius: 8px;
+    padding: 8px;
+    width: 300px;
+    align-self: center;
+    text-align: center;
+}
+
+@media screen and (max-width: 1024px) {
+    .disabled {
+        display: block;
+    }
+    .topInterface {
+        display: none;
+    }
+    .bottomInterface {
+        display: none;
+    }
+}

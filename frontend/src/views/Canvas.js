@@ -1,5 +1,4 @@
 import React, { useContext } from 'react';
-import { Link } from 'react-router-dom';
 import { FaSave, FaCheck, FaRegTrashAlt } from 'react-icons/fa';
 import styles from './Canvas.module.css';
 import CanvasView from '../components/CanvasView';
@@ -10,6 +9,7 @@ import Alert from '@material-ui/lab/Alert';
 import Tooltip from '@material-ui/core/Tooltip';
 import { useMediaQuery } from 'react-responsive';
 import Box from '@material-ui/core/Box';
+import SmallScreenMsg from '../components/SmallScreenMsg';
 
 
 function Canvas() {
@@ -73,12 +73,7 @@ function Canvas() {
   const canvasHeight = canvasWidth / (16 / 9);
 
   const isMobile = useMediaQuery({ query: `(max-width: 760px)` });
-  const SmallScreenMsg = <div className={styles.disabled}>
-    <h1>Uh Oh!</h1>
-    <p>Virtual Playground is not available for a screen this small 😥</p>
-    <p>Please use a device with a larger screen!</p>
-    <Link to='/'>Return to Home</Link>
-  </div>;
+
 
   return (
     <>
@@ -88,7 +83,7 @@ function Canvas() {
          </Alert>
       </Snackbar>
 
-      {isMobile ? SmallScreenMsg :
+      {isMobile ? <SmallScreenMsg /> :
         <>
           <Box display="flex" flexDirection="row">
 
