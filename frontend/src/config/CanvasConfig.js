@@ -1,6 +1,6 @@
 import { FaPen, FaPaintBrush, FaPaintRoller, FaEraser, FaRegCircle, FaRegSquare } from 'react-icons/fa';
 import ChangeHistoryIcon from '@material-ui/icons/ChangeHistory';
-import styles from '../views/Canvas.module.css';
+import styles from '../components/Toolbar.module.css';
 
 const colors = [
     {
