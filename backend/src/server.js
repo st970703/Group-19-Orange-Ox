@@ -1,6 +1,7 @@
 import express from 'express';
 import path from 'path';
 import { Server } from 'socket.io';
+import connectToDatabse from './db/db-connect';
 
 function removeElementFromArray(array, element) {
   const index = array.indexOf(element);
@@ -11,9 +12,16 @@ function removeElementFromArray(array, element) {
   return array;
 }
 
+// dotenv setup for loading env variables
+require('dotenv').config();
+
 // Setup Express
 const app = express();
 const port = process.env.PORT || 3001;
+
+// Connect to MongoDB
+connectToDatabse()
+  .then(() => console.log('Connected to database'));
 
 const httpServer = app.listen(port, 'localhost',
   function () {
@@ -24,15 +32,21 @@ const httpServer = app.listen(port, 'localhost',
 
 // Setup body-parser
 app.use(express.json());
+const bodyParser = require('body-parser');
+app.use(bodyParser.urlencoded({extended: true}));
 
 // Make the "public" folder available statically
-app.use(express.static(path.join(__dirname, '../public')));
+// app.use(express.static(path.join(__dirname, '../public')));
 
 app.get('/', (req, res) => {
   res.send('Hello, World!');
 });
 
+import routes from './routes/index';
+app.use('/', routes);
+
 // Serve up the frontend's "build" directory, if we're running in production mode.
+/*
 if (process.env.NODE_ENV === 'production') {
   console.log('Running in production!');
 
@@ -44,6 +58,7 @@ if (process.env.NODE_ENV === 'production') {
     res.sendFile(path.join(__dirname, '../../frontend/build/index.html'));
   });
 }
+*/
 
 // WebSocket Portion
 const wsServerPort = process.env.SOCKET_PORT || 4001;
