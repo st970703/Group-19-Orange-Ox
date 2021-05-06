@@ -4,8 +4,8 @@ import { makeStyles } from "@material-ui/styles";
 import { AppBar, CssBaseline, Toolbar, IconButton, Typography, Drawer, Divider, List, Container } from '@material-ui/core';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import MenuIcon from '@material-ui/icons/Menu';
-import listMenuItems from '../listMenuItems';
-import AuthenticationButton from "../components/authentication-button";
+import listMenuItems from '../components/ListMenuItems';
+import AuthenticationButton from "../components/AuthenticationButton";
 import { withRouter, useLocation } from 'react-router-dom';
 import Home from "./Home";
 import About from "./About";
@@ -13,7 +13,6 @@ import Canvas from "./Canvas";
 import Friends from "./Friends";
 import Profile from "./Profile";
 import { Switch, Route } from 'react-router-dom';
-import ProtectedRoute from "../auth/protected-route";
 import { FaChild } from 'react-icons/fa';
 
 const drawerWidth = 240;
@@ -156,9 +155,9 @@ const Header = () => {
             <Switch>
               <Route exact path='/' component={Home} />
               <Route exact path='/about' component={About} />
-              <ProtectedRoute exact path='/profile' component={Profile} />
-              <ProtectedRoute exact path='/canvas' component={Canvas} />
-              <ProtectedRoute exact path='/friends' component={Friends} />
+              <Route exact path='/profile' component={Profile} />
+              <Route exact path='/canvas' component={Canvas} />
+              <Route exact path='/friends' component={Friends} />
             </Switch>
           </Container>
         </div>
