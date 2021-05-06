@@ -42,8 +42,13 @@ app.get('/', (req, res) => {
   res.send('Hello, World!');
 });
 
+/*
 import routes from './routes/index';
 app.use('/', routes);
+*/
+
+require('./routes/auth.routes')(app);
+require('./routes/user.routes')(app);
 
 // Serve up the frontend's "build" directory, if we're running in production mode.
 /*
