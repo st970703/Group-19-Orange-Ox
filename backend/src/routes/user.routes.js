@@ -16,5 +16,9 @@ module.exports = function (app) {
 
   app.post("/api/user/update", [authJwt.verifyToken], controller.updateUser);
 
+  app.post("/api/user/requestFriend", [authJwt.verifyToken], controller.requestFriend);
+
+  app.post("/api/user/acceptRequest", [authJwt.verifyToken], controller.acceptRequest);
+
   app.delete("/api/user/delete", [authJwt.verifyToken], controller.deleteUser);
 };
