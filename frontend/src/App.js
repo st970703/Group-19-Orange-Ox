@@ -1,6 +1,5 @@
-import React, { useState } from 'react';
+import React from 'react';
 import Header from './views/Header';
-import Login from './views/Login';
 import { ThemeProvider } from '@material-ui/styles';
 import { createMuiTheme } from '@material-ui/core/styles'
 
@@ -16,14 +15,6 @@ const theme = createMuiTheme({
 });
 
 const App = () => {
-  {/*
-  const [token, setToken] = useState();
- 
-  if(!token) {
-    return <Login setToken={setToken} />
-  }
-  */}
-
   return (
     <div id="app">
       <ThemeProvider theme={theme}>

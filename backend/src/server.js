@@ -18,6 +18,8 @@ require('dotenv').config();
 // Setup Express
 const app = express();
 const port = process.env.PORT || 3001;
+const helmet = require("helmet");
+const cors = require("cors");
 
 // Connect to MongoDB
 connectToDatabse()
@@ -37,6 +39,9 @@ app.use(bodyParser.urlencoded({extended: true}));
 
 // Make the "public" folder available statically
 // app.use(express.static(path.join(__dirname, '../public')));
+
+app.use(helmet());
+app.use(cors({ origin: 'http://localhost:3000' }));
 
 app.get('/', (req, res) => {
   res.send('Hello, World!');

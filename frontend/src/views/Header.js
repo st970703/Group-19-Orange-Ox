@@ -12,6 +12,7 @@ import About from "./About";
 import Canvas from "./Canvas";
 import Friends from "./Friends";
 import Profile from "./Profile";
+import ProtectedRoute from "../components/ProtectedRoute"
 import { Switch, Route } from 'react-router-dom';
 import { FaChild } from 'react-icons/fa';
 
@@ -155,9 +156,9 @@ const Header = () => {
             <Switch>
               <Route exact path='/' component={Home} />
               <Route exact path='/about' component={About} />
-              <Route exact path='/profile' component={Profile} />
-              <Route exact path='/canvas' component={Canvas} />
-              <Route exact path='/friends' component={Friends} />
+              <ProtectedRoute exact path='/profile' component={Profile} />
+              <ProtectedRoute exact path='/canvas' component={Canvas} />
+              <ProtectedRoute exact path='/friends' component={Friends} />
             </Switch>
           </Container>
         </div>

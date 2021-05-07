@@ -9,11 +9,11 @@ import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
 
 async function loginUser(credentials) {
-  return fetch("http://localhost:3001/api/", {
+  return fetch("http://localhost:3001/api/auth/signin", {
     method: "POST",
     headers: {
+      "accepts": "application/json",
       "Content-Type": "application/json",
-      "Access-Control-Allow-Origin": "http://localhost:3000",
     },
     body: JSON.stringify(credentials),
   }).then((data) => data.json());
@@ -26,11 +26,19 @@ export default function Login({ setToken }) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const token = await loginUser({
-      username,
-      password,
-    });
-    setToken(token);
+    if (username === "" || password === "") {
+      dialogcontexttext = "Please enter a username and/or password!"
+      console.log(dialogcontexttext);
+    } else {
+      const token = await loginUser({
+        username,
+        password,
+      });
+      setToken(token);
+
+      handleClose();
+      window.location.reload(false);
+    }
   };
 
   const handleClickOpen = () => {
@@ -40,6 +48,8 @@ export default function Login({ setToken }) {
   const handleClose = () => {
     setOpen(false);
   };
+
+  let dialogcontexttext = "Please log in to use more features in Virtual Playground";
 
   return (
     <div className="login">
@@ -54,26 +64,30 @@ export default function Login({ setToken }) {
         <DialogTitle id="form-dialog-title">Log In</DialogTitle>
         <DialogContent>
           <DialogContentText>
-            Please log in to use more features in Virtual Playground
+            {dialogcontexttext}
           </DialogContentText>
           <TextField
             onChange={(e) => setUserName(e.target.value)}
             autoFocus
+            required 
             margin="dense"
             id="username"
             label="Username"
             variant="outlined"
             type="text"
+            color="primary"           
             fullWidth
           />
           <TextField
             onChange={(e) => setPassword(e.target.value)}
+            required 
             margin="dense"
             id="password"
             label="Password"
             variant="outlined"
             type="password"
             autoComplete="current-password"
+            color="primary" 
             fullWidth
           />
         </DialogContent>
