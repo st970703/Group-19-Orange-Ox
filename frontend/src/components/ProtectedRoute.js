@@ -6,7 +6,6 @@ import useToken from "./UseToken";
 const ProtectedRoute = ({ component: Component, ...args }) => {
   const { token, setToken } = useToken();
 
-  console.log(token);
   if (!token) {
     return <Login setToken={setToken} />;
   } else return (
