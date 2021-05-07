@@ -28,10 +28,6 @@ app.use(express.json());
 // Make the "public" folder available statically
 app.use(express.static(path.join(__dirname, '../public')));
 
-app.get('/', (req, res) => {
-  res.send('Hello, World!');
-});
-
 // Serve up the frontend's "build" directory, if we're running in production mode.
 if (process.env.NODE_ENV === 'production') {
   console.log('Running in production!');
