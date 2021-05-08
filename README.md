@@ -44,15 +44,16 @@ to run the backend Express HTTP server on port 3001.
 
 ## Running the tests
 
-Explain how to run the automated tests for this system
-
-### Break down into end to end tests
-
-Explain what these tests test and why
-
+### Running the shallow tests on the frontend
 ```
-Give an example
+npm run test
 ```
+
+## Notes for Warnings and Errors
+```
+Warning: findDOMNode is deprecated in StrictMode. findDOMNode was passed an instance of Transition which is inside StrictMode. Instead, add a ref directly to the element you want to reference.
+```
+This issue is related to the Material UI Tooltips. The tooltips wrap around the components and are assigned keys and id's. However, this triggers this warning.
 
 ## Authors
 
