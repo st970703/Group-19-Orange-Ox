@@ -10,7 +10,6 @@ These instructions will get you a copy of the project up and running on your loc
 * [MERN Stack](https://www.mongodb.com/mern-stack)
 * [Material UI](https://material-ui.com/)
 * [react-p5](https://www.npmjs.com/package/react-p5)
-* [auth0](https://auth0.com/)
 * [socket.io](https://socket.io/)
 
 ### Installing
@@ -23,9 +22,11 @@ npm install
 ```
 npm install
 ```
-* create a ```.env ``` file in the frontend directory.
-use the [.env.example](./frontend/.env.example) file as an example.
+* Create a `.env` file in the frontend directory.
+Use the [.env.example](./frontend/.env.example) file as an example.
 
+* Create a `.env` file in the backend directory.
+Use the [.env.example](./backend/.env.example) file as an example.
 
 ### Running
 
