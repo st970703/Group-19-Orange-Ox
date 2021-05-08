@@ -54,7 +54,7 @@ npm run test
 ```
 Warning: findDOMNode is deprecated in StrictMode. findDOMNode was passed an instance of Transition which is inside StrictMode. Instead, add a ref directly to the element you want to reference.
 ```
-This issue is related to the Material UI Tooltips. The tooltips wrap around the components and are assigned keys and id's. However, this triggers this warning.
+This issue is related to the Material UI Tooltips. The tooltips wrap around the components and are assigned keys and id's. However, this warning is triggered.
 
 ## Authors
 
