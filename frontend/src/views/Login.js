@@ -9,6 +9,18 @@ import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
+import Divider from '@material-ui/core/Divider';
+
+async function checkloginUser(credentials) {
+  return fetch("http://localhost:3001/api/auth/signin", {
+    method: "POST",
+    headers: {
+      accepts: "application/json",
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(credentials),
+  });
+}
 
 async function loginUser(credentials) {
   return fetch("http://localhost:3001/api/auth/signin", {
@@ -59,43 +71,70 @@ function a11yProps(index) {
   };
 }
 
-export default function Login({ setToken }) {
+export default function Login({ setToken })  {
   const [username, setUserName] = useState();
   const [password, setPassword] = useState();
-  const [open, setOpen] = React.useState(false);
-  const [value, setValue] = React.useState(0);
+  const [open, setOpen] = useState(false);
+  const [value, setValue] = useState(0);
+  const [dialogText, setText] = useState();
 
   const handleLoginSubmit = async (e) => {
     e.preventDefault();
-    if (username === "" || password === "") {
-      dialogcontexttext = "Please enter a username and/or password!";
-      console.log(dialogcontexttext);
+    if (username === "" || username === undefined || password === "" || password === undefined) {
+      setText("Please enter a username and/or password!");
     } else {
-      const token = await loginUser({
+      const response = await checkloginUser({
         username,
         password,
       });
-      setToken(token);
 
-      handleClose();
-      window.location.reload(false);
+
+      if (response.status === 404 || response.status === 401) {
+        setText("Login Failed! Please enter a valid username and/or password!");
+      } else if (response.status === 200) {
+        const token = await loginUser({
+          username,
+          password,
+        });
+        setToken(token);
+
+        handleClose();
+        window.location.reload(false);
+      } else {
+        setText("An error occured during the login process");
+      }
     }
   };
 
   const handleCreateSubmit = async (e) => {
     e.preventDefault();
-    if (username !== "" || password !== "") {
-      await createUser({
+    if (username === "" || username === undefined || password === "" || password === undefined) {
+      setText("Please enter a username and/or password!");
+    } else {
+      const response = await createUser({
         username,
         password,
       });
 
-      handleClose();
-      window.location.reload(false);
+      if (response.status === 400) {
+        setText("This username has already been taken! Please enter another one.");
+      } else if (response.status === 200) {
+        const token = await loginUser({
+          username,
+          password,
+        });
+        setToken(token);
+
+        handleClose();
+        window.location.reload(false);
+      } else {
+        setText("An error occured during the login process. Please try again.");
+      }
     }
   };
 
   const handleClickOpen = () => {
+    setText("Please login to use Virtual Playground");
     setOpen(true);
   };
 
@@ -107,8 +146,13 @@ export default function Login({ setToken }) {
     setValue(newValue);
   };
 
-  let dialogcontexttext =
-    "Please log in to use more features in Virtual Playground";
+  const onLoginTabClicked = () => {
+    setText("Please login to use Virtual Playground");
+  };
+
+  const onCreateUserTabClicked = () => {
+    setText("Create an account in order to use Virtual Playground");
+  };
 
   return (
     <div className="login">
@@ -121,13 +165,14 @@ export default function Login({ setToken }) {
         aria-labelledby="form-dialog-title"
       >
         <Tabs value={value} onChange={handleChange}>
-          <Tab label="Log In" {...a11yProps(0)} />
-          <Tab label="Create User" {...a11yProps(1)} />
+          <Tab label="Log In" {...a11yProps(0)} onClick={onLoginTabClicked}/>
+          <Tab label="Create User" {...a11yProps(1)} onClick={onCreateUserTabClicked}/>
         </Tabs>
+        <Divider />
         <TabPanel value={value} index={0}>
           <DialogTitle id="form-dialog-title">Log In</DialogTitle>
           <DialogContent>
-            <DialogContentText>{dialogcontexttext}</DialogContentText>
+            <DialogContentText>{dialogText}</DialogContentText>
             <TextField
               onChange={(e) => setUserName(e.target.value)}
               autoFocus
@@ -165,7 +210,7 @@ export default function Login({ setToken }) {
         <TabPanel value={value} index={1}>
           <DialogTitle id="form-dialog-title">Create User</DialogTitle>
           <DialogContent>
-            <DialogContentText>Create an account to use all the features of Virtual Playground</DialogContentText>
+            <DialogContentText>{dialogText}</DialogContentText>
             <TextField
               onChange={(e) => setUserName(e.target.value)}
               autoFocus
