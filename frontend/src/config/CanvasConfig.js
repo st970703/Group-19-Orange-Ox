@@ -75,4 +75,8 @@ const brushes = [
     },
 ];
 
-export { colors, brushes };
+const canvasWidth = 960;
+const canvasHeight = 529;
+
+
+export { colors, brushes, canvasWidth, canvasHeight };
