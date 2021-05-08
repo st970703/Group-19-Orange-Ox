@@ -1,6 +1,7 @@
 import { React, useContext } from "react";
 import Sketch from "react-p5";
 import { CanvasContext } from '../context/CanvasContextProvider';
+import { bgColor, minX, minY } from '../config/CanvasConfig';
 
 function CanvasView({ canvasWidth, canvasHeight }) {
 
@@ -22,10 +23,8 @@ function CanvasView({ canvasWidth, canvasHeight }) {
     weight
   } = useContext(CanvasContext);
 
-  const bgColor = 255;
   let canvas;
-  const minX = 0;
-  const minY = 0;
+
 
   const setup = (p5, canvasParentRef) => {
     // use parent to render the canvas in this ref

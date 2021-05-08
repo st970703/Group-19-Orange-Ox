@@ -77,6 +77,9 @@ const brushes = [
 
 const canvasWidth = 960;
 const canvasHeight = 529;
+const bgColor = 255;
+const minX = 0;
+const minY = 0;
 
 
-export { colors, brushes, canvasWidth, canvasHeight };
+export { colors, brushes, canvasWidth, canvasHeight, bgColor, minX, minY };
