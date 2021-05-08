@@ -1,11 +1,6 @@
 import React, { useState } from "react";
-import Table from "@material-ui/core/Table";
-import TableBody from "@material-ui/core/TableBody";
-import TableCell from "@material-ui/core/TableCell";
-import TableHead from "@material-ui/core/TableHead";
-import TableContainer from "@material-ui/core/TableContainer";
-import TableRow from "@material-ui/core/TableRow";
-import Paper from "@material-ui/core/Paper";
+import { withRouter } from "react-router-dom";
+import Grid from "@material-ui/core/Grid";
 import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
 import Dialog from "@material-ui/core/Dialog";
@@ -24,7 +19,7 @@ async function updateUser(token, credentials) {
       "Content-Type": "application/json",
     },
     body: JSON.stringify(credentials),
-  }).then((data) => data.json());
+  });
 }
 
 async function deleteUser(token, credentials) {
@@ -40,23 +35,35 @@ async function deleteUser(token, credentials) {
 }
 
 function UserInfoTable() {
-  const { token } = useToken();
+  const { token, setToken } = useToken();
   const [username, setUserName] = useState();
-  const [updateOpen, setUpdateOpen] = React.useState(false);
-  const [deleteOpen, setDeleteOpen] = React.useState(false);
+  const [updateOpen, setUpdateOpen] = useState(false);
+  const [deleteOpen, setDeleteOpen] = useState(false);
+  const [text, setText] = useState("Please enter your new username");
 
   const handleUpdateSubmit = async (e) => {
     e.preventDefault();
-    if (username !== "") {
-      let tokenId = token.id;
+    if (username !== "" || username === undefined) {
+      let id = token.id;
+      let accessToken = token.accessToken;
 
-      await updateUser(token.accessToken, {
-        tokenId,
+      const response = await updateUser(accessToken, {
+        id,
         username,
       });
 
-      handleUpdateClose();
-      window.location.reload(false);
+      if (response.status === 200) {
+        setToken({
+          id,
+          username,
+          accessToken,
+        });
+
+        handleUpdateClose();
+        window.location.reload(false);
+      } else {
+        setText("Error updating username! Username may already be in use.");
+      }
     }
   };
 
@@ -76,10 +83,10 @@ function UserInfoTable() {
       username,
     });
 
+    sessionStorage.clear();
     handleDeleteClose();
-    window.location.reload(false);
 
-    // NEED TO REDIRECT TO HOME PAGE HERE
+    window.location.reload(false);
   };
 
   const handleDeleteClickOpen = () => {
@@ -91,96 +98,85 @@ function UserInfoTable() {
   };
 
   return (
-    <TableContainer component={Paper}>
-      <Table aria-label="User_Info_Table">
-        <TableHead>
-          <TableRow>
-            <TableCell>Username</TableCell>
-            <TableCell />
-            <TableCell />
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          <TableRow key={"user"}>
-            <TableCell component="th" scope="row">
-              {token.username}
-            </TableCell>
-            <TableCell>
-              <Button
-                variant="contained"
+    <>
+      <Grid
+        container
+        direction="row"
+        justify="flex-start"
+        alignItems="center"
+      >
+        <Grid item xs={2}>
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={handleUpdateClickOpen}
+          >
+            Change Username
+          </Button>
+          <Dialog
+            open={updateOpen}
+            onClose={handleUpdateClose}
+            aria-labelledby="form-dialog-title"
+          >
+            <DialogTitle id="form-dialog-title">Update Username</DialogTitle>
+            <DialogContent>
+              <DialogContentText>{text}</DialogContentText>
+              <TextField
+                onChange={(e) => setUserName(e.target.value)}
+                autoFocus
+                required
+                margin="dense"
+                id="username"
+                label="Username"
+                variant="outlined"
+                type="text"
                 color="primary"
-                onClick={handleUpdateClickOpen}
-              >
-                Change Username
+                fullWidth
+              />
+            </DialogContent>
+            <DialogActions>
+              <Button onClick={handleUpdateClose} color="primary">
+                Cancel
               </Button>
-              <Dialog
-                open={updateOpen}
-                onClose={handleUpdateClose}
-                aria-labelledby="form-dialog-title"
-              >
-                <DialogTitle id="form-dialog-title">
-                  Update Username
-                </DialogTitle>
-                <DialogContent>
-                  <DialogContentText>
-                    Please enter your new username
-                  </DialogContentText>
-                  <TextField
-                    onChange={(e) => setUserName(e.target.value)}
-                    autoFocus
-                    required
-                    margin="dense"
-                    id="username"
-                    label="Username"
-                    variant="outlined"
-                    type="text"
-                    color="primary"
-                    fullWidth
-                  />
-                </DialogContent>
-                <DialogActions>
-                  <Button onClick={handleUpdateClose} color="primary">
-                    Cancel
-                  </Button>
-                  <Button onClick={handleUpdateSubmit} color="primary">
-                    Update Username
-                  </Button>
-                </DialogActions>
-              </Dialog>
-            </TableCell>
-            <TableCell>
-              <Button variant="contained" color="primary" onClick={handleDeleteClickOpen}>
-                Delete User
+              <Button onClick={handleUpdateSubmit} color="primary">
+                Update Username
               </Button>
-              <Dialog
-                open={deleteOpen}
-                onClose={handleDeleteClose}
-                aria-labelledby="form-dialog-title"
-              >
-                <DialogTitle id="form-dialog-title">
-                  Deleting Your Account
-                </DialogTitle>
-                <DialogContent>
-                  <DialogContentText>
-                    WARNING: There is no coming back once you delete your account, are
-                    you sure you want to do this?
-                  </DialogContentText>
-                </DialogContent>
-                <DialogActions>
-                  <Button onClick={handleDeleteClose} color="primary">
-                    Cancel
-                  </Button>
-                  <Button onClick={handleDeleteSubmit} color="error">
-                    DELETE MY ACCOUNT
-                  </Button>
-                </DialogActions>
-              </Dialog>
-            </TableCell>
-          </TableRow>
-        </TableBody>
-      </Table>
-    </TableContainer>
+            </DialogActions>
+          </Dialog>
+        </Grid>
+        <Grid item xs={8}>
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={handleDeleteClickOpen}
+          >
+            Delete My Account
+          </Button>
+          <Dialog
+            open={deleteOpen}
+            onClose={handleDeleteClose}
+            aria-labelledby="form-dialog-title"
+          >
+            <DialogTitle id="form-dialog-title">Deleting Your Account</DialogTitle>
+            <DialogContent>
+              <DialogContentText>
+                WARNING: There is no coming back once you delete your account, are
+                you sure you want to do this?
+              </DialogContentText>
+            </DialogContent>
+            <DialogActions>
+              <Button onClick={handleDeleteClose} color="primary">
+                Cancel
+              </Button>
+              <Button onClick={handleDeleteSubmit} color="error">
+                DELETE MY ACCOUNT
+              </Button>
+            </DialogActions>
+          </Dialog>
+        </Grid>
+      </Grid>
+    </>
   );
 }
 
-export default UserInfoTable;
+export default withRouter(UserInfoTable);
