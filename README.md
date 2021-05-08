@@ -45,15 +45,12 @@ to run the backend Express HTTP server on port 3001.
 
 ## Running the tests
 
-Explain how to run the automated tests for this system
-
-### Break down into end to end tests
-
-Explain what these tests test and why
-
+### Backend Testing
+* In the `backend` directory, run command:
 ```
-Give an example
+npm test
 ```
+this will run the tests for MongoDB and Express.
 
 ## Authors
 
