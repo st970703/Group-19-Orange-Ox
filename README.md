@@ -45,6 +45,7 @@ to run the backend Express HTTP server on port 3001.
 ## Running the tests
 
 ### Running the shallow tests on the frontend
+Go to the frontend directory, and then
 ```
 npm run test
 ```
