@@ -1,5 +1,4 @@
 import express from 'express';
-import path from 'path';
 import { Server } from 'socket.io';
 import connectToDatabse from './db/db-connect';
 
@@ -37,9 +36,6 @@ app.use(express.json());
 const bodyParser = require('body-parser');
 app.use(bodyParser.urlencoded({extended: true}));
 
-// Make the "public" folder available statically
-// app.use(express.static(path.join(__dirname, '../public')));
-
 app.use(helmet());
 app.use(cors({ origin: 'http://localhost:3000' }));
 
@@ -49,8 +45,6 @@ app.get('/', (req, res) => {
 
 require('./routes/auth.routes')(app);
 require('./routes/user.routes')(app);
-
-// Serve up the frontend's "build" directory, if we're running in production mode.
 
 // WebSocket Portion
 const wsServerPort = process.env.SOCKET_PORT || 4001;
