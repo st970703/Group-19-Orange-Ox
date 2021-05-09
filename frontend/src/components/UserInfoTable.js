@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { withRouter } from "react-router-dom";
-import Grid from "@material-ui/core/Grid";
 import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
 import Dialog from "@material-ui/core/Dialog";
@@ -110,82 +109,71 @@ function UserInfoTable() {
 
   return (
     <>
-      <Grid
-        container
-        direction="row"
-        justify="flex-start"
-        alignItems="center"
+      <Button
+        variant="contained"
+        color="primary"
+        onClick={handleUpdateClickOpen}
       >
-        <Grid item xs={2}>
-          <Button
-            variant="contained"
+        Change Username
+      </Button>
+      <Dialog
+        open={updateOpen}
+        onClose={handleUpdateClose}
+        aria-labelledby="form-dialog-title"
+      >
+        <DialogTitle id="form-dialog-title">Update Username</DialogTitle>
+        <DialogContent>
+          <DialogContentText>{text}</DialogContentText>
+          <TextField
+            onChange={(e) => setUserName(e.target.value)}
+            autoFocus
+            required
+            margin="dense"
+            id="username"
+            label="Username"
+            variant="outlined"
+            type="text"
             color="primary"
-            onClick={handleUpdateClickOpen}
-          >
-            Change Username
+            fullWidth
+          />
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleUpdateClose} color="primary">
+            Cancel
           </Button>
-          <Dialog
-            open={updateOpen}
-            onClose={handleUpdateClose}
-            aria-labelledby="form-dialog-title"
-          >
-            <DialogTitle id="form-dialog-title">Update Username</DialogTitle>
-            <DialogContent>
-              <DialogContentText>{text}</DialogContentText>
-              <TextField
-                onChange={(e) => setUserName(e.target.value)}
-                autoFocus
-                required
-                margin="dense"
-                id="username"
-                label="Username"
-                variant="outlined"
-                type="text"
-                color="primary"
-                fullWidth
-              />
-            </DialogContent>
-            <DialogActions>
-              <Button onClick={handleUpdateClose} color="primary">
-                Cancel
-              </Button>
-              <Button onClick={handleUpdateSubmit} color="primary">
-                Update Username
-              </Button>
-            </DialogActions>
-          </Dialog>
-        </Grid>
-        <Grid item xs={8}>
-          <Button
-            variant="contained"
-            color="primary"
-            onClick={handleDeleteClickOpen}
-          >
-            Delete My Account
+          <Button onClick={handleUpdateSubmit} color="primary">
+            Update Username
           </Button>
-          <Dialog
-            open={deleteOpen}
-            onClose={handleDeleteClose}
-            aria-labelledby="form-dialog-title"
-          >
-            <DialogTitle id="form-dialog-title">Deleting Your Account</DialogTitle>
-            <DialogContent>
-              <DialogContentText>
-                WARNING: There is no coming back once you delete your account, are
-                you sure you want to do this?
-              </DialogContentText>
-            </DialogContent>
-            <DialogActions>
-              <Button onClick={handleDeleteClose} color="primary">
-                Cancel
-              </Button>
-              <Button onClick={handleDeleteSubmit} color="error">
-                DELETE MY ACCOUNT
-              </Button>
-            </DialogActions>
-          </Dialog>
-        </Grid>
-      </Grid>
+        </DialogActions>
+      </Dialog>
+      <Button
+        variant="contained"
+        color="primary"
+        onClick={handleDeleteClickOpen}
+      >
+        Delete My Account
+      </Button>
+      <Dialog
+        open={deleteOpen}
+        onClose={handleDeleteClose}
+        aria-labelledby="form-dialog-title"
+      >
+        <DialogTitle id="form-dialog-title">Deleting Your Account</DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+            WARNING: There is no coming back once you delete your account, are
+            you sure you want to do this?
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleDeleteClose} color="primary">
+            Cancel
+          </Button>
+          <Button onClick={handleDeleteSubmit} color="error">
+            DELETE MY ACCOUNT
+          </Button>
+        </DialogActions>
+      </Dialog>
     </>
   );
 }
