@@ -10,9 +10,7 @@ describe('Express Route Testing', () => {
     app.get('/', (req, res) => {
       res.send('Test');
     });
-    // require('../routes/auth.routes')(app);
-    // require('../routes/user.routes')(app);
-    server = app.listen(3001, () => done());
+    server = app.listen(3002, () => done());
   });
 
   afterAll(done => {
@@ -22,7 +20,7 @@ describe('Express Route Testing', () => {
   });
 
   it('should launch test server', async () => {
-    const response = await axios.get('http://localhost:3001/');
+    const response = await axios.get('http://localhost:3002/');
     expect(response.data).toBe('Test');
   });
 });
