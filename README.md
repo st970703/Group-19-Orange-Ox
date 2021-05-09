@@ -21,29 +21,29 @@ These instructions will get you a copy of the project up and running on your loc
 
 ### Installing
 
-* Go to the frontend directory, and then
+* Go to the *frontend* directory, and then
 ```
 npm install
 ```
-* Likewise, go to the backend directory, and then
+* Likewise, go to the *backend* directory, and then
 ```
 npm install
 ```
-* Create a `.env` file in the frontend directory.
-Use the [.env.example](./frontend/.env.example) file as an example.
+* Create a `.env` file in the *frontend* directory.
+Use the [frontend/.env.example](./frontend/.env.example) file as an example.
 
-* Create a `.env` file in the backend directory.
-Use the [.env.example](./backend/.env.example) file as an example.
+* Create a `.env` file in the *backend* directory.
+Use the [backend/.env.example](./backend/.env.example) file as an example.
 
 ### Running
 
-* Go to the frontend directory, and then
+* Go to the *frontend* directory, and then
 ```
 npm run start
 ```
 to run the frontend React App on port 3000.
 
-* Likewise, go to the backend directory, and then
+* Likewise, go to the *backend* directory, and then
 ```
 npm run start
 ```
@@ -53,14 +53,14 @@ to run the backend Express HTTP server on port 3001.
 ## Running the tests
 
 ### Backend Testing
-In the `backend` directory, run command:
+In the *backend* directory, run command:
 ```
 npm test
 ```
 this will run the tests for MongoDB and Express.
 
 ### Frontend (Shallow) Testing
-In the `frontend` directory, run command:
+In the *frontend* directory, run command:
 ```
 npm run test
 ```
