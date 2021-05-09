@@ -66,7 +66,7 @@ npm run test
 ```
 
 ## Wiki and Notes
-[GitHub WiKi](https://github.com/st970703/Group-19-Orange-Ox/wiki)
+[GitHub Wiki](https://github.com/st970703/Group-19-Orange-Ox/wiki)
 
 ## Authors
 * Mike Lee (st970703)
