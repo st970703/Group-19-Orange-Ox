@@ -8,6 +8,8 @@ import DialogContent from "@material-ui/core/DialogContent";
 import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import useToken from "./UseToken";
+import { makeStyles } from '@material-ui/core/styles';
+
 
 // function used to update the username of the user
 async function updateUser(token, credentials) {
@@ -107,8 +109,18 @@ function UserInfoTable() {
     setDeleteOpen(false);
   };
 
+  const useStyles = makeStyles((theme) => ({
+    root: {
+      '& > *': {
+        margin: theme.spacing(1),
+      },
+    },
+  }));
+
+  const classes = useStyles();
+
   return (
-    <>
+    <div className={classes.root}>
       <Button
         variant="contained"
         color="primary"
@@ -174,7 +186,7 @@ function UserInfoTable() {
           </Button>
         </DialogActions>
       </Dialog>
-    </>
+    </div>
   );
 }
 
