@@ -67,9 +67,9 @@ This issue is related to the Material UI Tooltips. The tooltips wrap around the 
 
 ## Authors
 
-* Mike Lee
-* Jusin Kim
-* Callum Bradding
+* Mike Lee (st970703)
+* Jusin Kim (naznsan)
+* Callum Bradding (calcalbrad)
 
 ## License
 
