@@ -18,6 +18,7 @@ import { FaChild } from 'react-icons/fa';
 
 const drawerWidth = 240;
 
+// Create the styles for the application using Material UI
 const useStyles = makeStyles((theme) => ({
   root: {
     display: 'flex',
@@ -97,6 +98,8 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+
+// Header component that contains an drawer with menu items & app bar with login components
 const Header = () => {
   const classes = useStyles();
 
@@ -150,7 +153,7 @@ const Header = () => {
         <Divider />
         <List>{listMenuItems}</List>
       </Drawer>
-      <main className={classes.content}>
+      <main className={classes.content}> {/* where the components get rendered */}
         <div className={classes.appBarSpacer}>
           <Container className={classes.container}>
             <Switch>

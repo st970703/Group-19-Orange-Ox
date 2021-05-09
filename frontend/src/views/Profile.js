@@ -3,6 +3,7 @@ import { Typography } from "@material-ui/core";
 import UserInfoTable from "../components/UserInfoTable";
 import AccountBoxIcon from "@material-ui/icons/AccountBox";
 
+// used to handle profile events
 const Profile = () => {
   return (
     <>

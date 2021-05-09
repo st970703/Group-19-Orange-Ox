@@ -1,6 +1,7 @@
 import React from "react";
 import Button from "@material-ui/core/Button";
 
+// used to clear the session and reload page
 export default function LogoutButton() {
   const onClick = () => {
     sessionStorage.clear();

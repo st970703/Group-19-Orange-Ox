@@ -10,6 +10,7 @@ function ListItemLink(props) {
     return <ListItem button component="a" {...props} />;
 }
 
+// contains items for the drawer menu
 const listMenuItems = (
     <div>
         <ListItemLink href="/">

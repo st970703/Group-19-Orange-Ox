@@ -11,6 +11,7 @@ import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
 import Divider from '@material-ui/core/Divider';
 
+// function to call fetch request to check if the login is valid
 async function checkloginUser(credentials) {
   return fetch("http://localhost:3001/api/auth/signin", {
     method: "POST",
@@ -22,6 +23,7 @@ async function checkloginUser(credentials) {
   });
 }
 
+// function to call fetch request to login in the user
 async function loginUser(credentials) {
   return fetch("http://localhost:3001/api/auth/signin", {
     method: "POST",
@@ -33,6 +35,7 @@ async function loginUser(credentials) {
   }).then((data) => data.json());
 }
 
+// function to call fetch request to create a user
 async function createUser(credentials) {
   return fetch("http://localhost:3001/api/auth/signup", {
     method: "POST",
@@ -44,6 +47,7 @@ async function createUser(credentials) {
   }).then((data) => data.json());
 }
 
+// function to contain information about the panel
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
 
@@ -64,6 +68,7 @@ function TabPanel(props) {
   );
 }
 
+// function to send props through to tab component
 function a11yProps(index) {
   return {
     id: `simple-tab-${index}`,
@@ -77,7 +82,8 @@ export default function Login({ setToken })  {
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState(0);
   const [dialogText, setText] = useState();
-
+  
+  // used to handle a login request
   const handleLoginSubmit = async (e) => {
     e.preventDefault();
     if (username === "" || username === undefined || password === "" || password === undefined) {
@@ -88,10 +94,11 @@ export default function Login({ setToken })  {
         password,
       });
 
-
+      // if the response status is not valid, update the dialog
       if (response.status === 404 || response.status === 401) {
         setText("Login Failed! Please enter a valid username and/or password!");
       } else if (response.status === 200) {
+        // if response is valid, log the user in and set the jwt token
         const token = await loginUser({
           username,
           password,
@@ -106,8 +113,10 @@ export default function Login({ setToken })  {
     }
   };
 
+  // used to handle creating an account
   const handleCreateSubmit = async (e) => {
     e.preventDefault();
+    // if the username is not entered or defined, update the dialog text
     if (username === "" || username === undefined || password === "" || password === undefined) {
       setText("Please enter a username and/or password!");
     } else {
@@ -116,9 +125,10 @@ export default function Login({ setToken })  {
         password,
       });
 
+      // if error is 400, the username already exists within the system
       if (response.status === 400) {
         setText("This username has already been taken! Please enter another one.");
-      } else if (response.status === 200) {
+      } else if (response.status === 200) { // if response is 200 they are a valid user and can be logged in
         const token = await loginUser({
           username,
           password,
@@ -133,23 +143,28 @@ export default function Login({ setToken })  {
     }
   };
 
+  // used to handle open event for dialog
   const handleClickOpen = () => {
-    setText("Please login to use Virtual Playground");
+    setText("Please login to use Virtual Playground"); // should be login by default so we render the login text
     setOpen(true);
   };
 
+  // used to handle close event for dialog
   const handleClose = () => {
     setOpen(false);
   };
 
+  // used to handle changing between tabs
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
 
+  // used to handle click events for login tab
   const onLoginTabClicked = () => {
     setText("Please login to use Virtual Playground");
   };
 
+  // used to handle click events for create user tab
   const onCreateUserTabClicked = () => {
     setText("Create an account in order to use Virtual Playground");
   };

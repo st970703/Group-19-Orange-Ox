@@ -1,12 +1,13 @@
 import { Typography } from "@material-ui/core";
 import React from "react";
 import { Route } from "react-router-dom";
-import Login from "../views/Login";
 import useToken from "./UseToken";
 
+// A route where a user must be signed in, in order to access it
 const ProtectedRoute = ({ component: Component, ...args }) => {
-  const { token, setToken } = useToken();
+  const { token } = useToken();
 
+  // Check if the token exists and if not the user has needs to sign in
   if (!token) {
     return (
       <>
@@ -18,7 +19,7 @@ const ProtectedRoute = ({ component: Component, ...args }) => {
         </Typography>
       </>
     );
-  } else return (
+  } else return ( // if the token exists render this component
     <Route 
       render={
         (props) => {

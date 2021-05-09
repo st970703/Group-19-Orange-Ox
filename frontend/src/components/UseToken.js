@@ -1,5 +1,6 @@
 import { useState } from "react";
 
+// used to allow methods access to the token
 export default function useToken() {
   const getToken = () => {
     const tokenString = sessionStorage.getItem("token");
@@ -9,8 +10,10 @@ export default function useToken() {
     }
   };
 
+  // keeps track of the state of the token
   const [token, setToken] = useState(getToken());
 
+  // function used to save the token in session storage
   const saveToken = (userToken) => {
     // Used to prevent faulty token from being saved
     const hasValue = userToken.hasOwnProperty("message");

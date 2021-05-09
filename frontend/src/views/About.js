@@ -9,7 +9,7 @@ import PeopleIcon from '@material-ui/icons/People';
 import { FaGithubAlt, FaBalanceScale } from 'react-icons/fa';
 import InfoIcon from '@material-ui/icons/Info';
 
-
+// Page to tell users about the project
 function About() {
   return (
     <div>

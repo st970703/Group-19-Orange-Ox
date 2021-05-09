@@ -10,6 +10,7 @@ import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import useToken from "./UseToken";
 
+// function used to update the username of the user
 async function updateUser(token, credentials) {
   return fetch("http://localhost:3001/api/user/update", {
     method: "POST",
@@ -22,6 +23,7 @@ async function updateUser(token, credentials) {
   });
 }
 
+// function used to delete the user from the system
 async function deleteUser(token, credentials) {
   return fetch("http://localhost:3001/api/user/delete", {
     method: "DELETE",
@@ -41,6 +43,7 @@ function UserInfoTable() {
   const [deleteOpen, setDeleteOpen] = useState(false);
   const [text, setText] = useState("Please enter your new username");
 
+  // if update user is called, this function is called
   const handleUpdateSubmit = async (e) => {
     e.preventDefault();
     if (username !== "" || username === undefined) {
@@ -52,6 +55,7 @@ function UserInfoTable() {
         username,
       });
 
+      // if a response is valid, we set the session token to the new token
       if (response.status === 200) {
         setToken({
           id,
@@ -67,32 +71,39 @@ function UserInfoTable() {
     }
   };
 
+  // used to handle open events for the update user dialog
   const handleUpdateClickOpen = () => {
     setUpdateOpen(true);
   };
 
+  // used to handle close events for the update user dialog
   const handleUpdateClose = () => {
     setUpdateOpen(false);
   };
 
+  // if delete user is called, this function is called
   const handleDeleteSubmit = async () => {
     let tokenId = token.id;
 
+    // delete user from database
     await deleteUser(token.accessToken, {
       tokenId,
       username,
     });
 
+    // clear the session storage and refresh the page
     sessionStorage.clear();
     handleDeleteClose();
 
     window.location.reload(false);
   };
 
+  // used to handle open events for the delete user dialog
   const handleDeleteClickOpen = () => {
     setDeleteOpen(true);
   };
 
+  // used to handle close events for the delete user dialog
   const handleDeleteClose = () => {
     setDeleteOpen(false);
   };
