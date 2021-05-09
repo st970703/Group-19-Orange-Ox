@@ -1,7 +1,7 @@
 # SE750/CS732 Group-19-Orange-Ox
 <img src="./frontend/src/img/orange-ox.svg" alt="Orange_ox_logo" height="90">
-<br/><br/>
-<img src="./img/Screenshot.png" alt="App_screenshot" height="300">
+<br/>
+<img src="./img/Screenshot_imac_front.png" alt="App_screenshot" width="790">
 
 ## Getting Started
 
@@ -12,7 +12,6 @@ These instructions will get you a copy of the project up and running on your loc
 * [MERN Stack](https://www.mongodb.com/mern-stack)
 * [Material UI](https://material-ui.com/)
 * [react-p5](https://www.npmjs.com/package/react-p5)
-* [auth0](https://auth0.com/)
 * [socket.io](https://socket.io/)
 
 ### Installing
@@ -25,9 +24,11 @@ npm install
 ```
 npm install
 ```
-* create a ```.env ``` file in the frontend directory.
-use the [.env.example](./frontend/.env.example) file as an example.
+* Create a `.env` file in the frontend directory.
+Use the [.env.example](./frontend/.env.example) file as an example.
 
+* Create a `.env` file in the backend directory.
+Use the [.env.example](./backend/.env.example) file as an example.
 
 ### Running
 
@@ -46,8 +47,14 @@ to run the backend Express HTTP server on port 3001.
 
 ## Running the tests
 
-### Running the shallow tests on the frontend
-Go to the frontend directory, and then
+### Backend Testing
+In the `backend` directory, run command:
+```
+npm test
+```
+this will run the tests for MongoDB and Express.
+### Frontend (Shallow) Testing
+In the `frontend` directory, run command:
 ```
 npm run test
 ```
@@ -60,9 +67,9 @@ This issue is related to the Material UI Tooltips. The tooltips wrap around the 
 
 ## Authors
 
-* Mike Lee
-* Jusin Kim
-* Callum Bradding
+* Mike Lee (st970703)
+* Jusin Kim (naznsan)
+* Callum Bradding (calcalbrad)
 
 ## License
 

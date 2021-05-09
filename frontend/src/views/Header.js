@@ -4,20 +4,21 @@ import { makeStyles } from "@material-ui/styles";
 import { AppBar, CssBaseline, Toolbar, IconButton, Typography, Drawer, Divider, List, Container } from '@material-ui/core';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import MenuIcon from '@material-ui/icons/Menu';
-import listMenuItems from '../listMenuItems';
-import AuthenticationButton from "../components/authentication-button";
+import listMenuItems from '../components/ListMenuItems';
+import AuthenticationButton from "../components/AuthenticationButton";
 import { withRouter, useLocation } from 'react-router-dom';
 import Home from "./Home";
 import About from "./About";
 import Canvas from "./Canvas";
 import Friends from "./Friends";
 import Profile from "./Profile";
+import ProtectedRoute from "../components/ProtectedRoute"
 import { Switch, Route } from 'react-router-dom';
-import ProtectedRoute from "../auth/protected-route";
 import { FaChild } from 'react-icons/fa';
 
 const drawerWidth = 240;
 
+// Create the styles for the application using Material UI
 const useStyles = makeStyles((theme) => ({
   root: {
     display: 'flex',
@@ -97,6 +98,8 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+
+// Header component that contains an drawer with menu items & app bar with login components
 const Header = () => {
   const classes = useStyles();
 

@@ -1,20 +1,17 @@
-import { Typography } from '@material-ui/core';
-import React from 'react';
-import { useParams } from 'react-router';
-import PeopleIcon from '@material-ui/icons/People';
+import { Typography } from "@material-ui/core";
+import React from "react";
+import PeopleIcon from "@material-ui/icons/People";
 
-function Friends() {
-  const { userId } = useParams();
+// Component for finding and adding friends for the user -> For a future sprint
+export default function Friends() {
   return (
     <div>
       <Typography variant="h3" gutterBottom>
-        Friends <PeopleIcon fontSize={'large'} />
+        Friends <PeopleIcon fontSize={"large"} />
       </Typography>
-      <Typography variant="body1">
-        User ID: {userId}
+      <Typography variant="body1" gutterBottom>
+        Coming soon in a future update!
       </Typography>
     </div>
   );
 }
-
-export default Friends;

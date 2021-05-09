@@ -1,6 +1,7 @@
 import express from 'express';
 import path from 'path';
 import { Server } from 'socket.io';
+import connectToDatabse from './db/db-connect';
 
 function removeElementFromArray(array, element) {
   const index = array.indexOf(element);
@@ -11,9 +12,18 @@ function removeElementFromArray(array, element) {
   return array;
 }
 
+// dotenv setup for loading env variables
+require('dotenv').config();
+
 // Setup Express
 const app = express();
 const port = process.env.PORT || 3001;
+const helmet = require("helmet");
+const cors = require("cors");
+
+// Connect to MongoDB
+connectToDatabse()
+  .then(() => console.log('Connected to database'));
 
 const httpServer = app.listen(port, 'localhost',
   function () {
@@ -24,22 +34,23 @@ const httpServer = app.listen(port, 'localhost',
 
 // Setup body-parser
 app.use(express.json());
+const bodyParser = require('body-parser');
+app.use(bodyParser.urlencoded({extended: true}));
 
 // Make the "public" folder available statically
-app.use(express.static(path.join(__dirname, '../public')));
+// app.use(express.static(path.join(__dirname, '../public')));
+
+app.use(helmet());
+app.use(cors({ origin: 'http://localhost:3000' }));
+
+app.get('/', (req, res) => {
+  res.send('Hello, World!');
+});
+
+require('./routes/auth.routes')(app);
+require('./routes/user.routes')(app);
 
 // Serve up the frontend's "build" directory, if we're running in production mode.
-if (process.env.NODE_ENV === 'production') {
-  console.log('Running in production!');
-
-  // Make all files in that folder public
-  app.use(express.static(path.join(__dirname, '../../frontend/build')));
-
-  // If we get any GET request we can't process using one of the server routes, serve up index.html by default.
-  app.get('*', (req, res) => {
-    res.sendFile(path.join(__dirname, '../../frontend/build/index.html'));
-  });
-}
 
 // WebSocket Portion
 const wsServerPort = process.env.SOCKET_PORT || 4001;
@@ -83,9 +94,6 @@ io.sockets.on('connection',
 
             // Send it to all other clients
             socket.broadcast.emit('pen', data);
-
-            // This is a way to send to everyone including sender
-            // io.sockets.emit('message', "this goes to everyone");
           } else {
             return;
           }
@@ -101,9 +109,6 @@ io.sockets.on('connection',
 
             // Send it to all other clients
             socket.broadcast.emit('shape', data);
-
-            // This is a way to send to everyone including sender
-            // io.sockets.emit('message', "this goes to everyone");
           } else {
             return;
           }
@@ -119,9 +124,6 @@ io.sockets.on('connection',
 
             // Send it to all other clients
             socket.broadcast.emit('eraser', data);
-
-            // This is a way to send to everyone including sender
-            // io.sockets.emit('message', "this goes to everyone");
           } else {
             return;
           }
@@ -137,9 +139,6 @@ io.sockets.on('connection',
 
             // Send it to all other clients
             socket.broadcast.emit('clear');
-
-            // This is a way to send to everyone including sender
-            // io.sockets.emit('message', "this goes to everyone");
           } else {
             return;
           }
