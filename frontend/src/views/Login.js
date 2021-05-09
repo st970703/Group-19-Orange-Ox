@@ -152,7 +152,7 @@ export default function Login({ setToken }) {
         handleClose();
         window.location.reload(false);
       } else {
-        setText("An error occured during the login process. Please try again.");
+        setText(response.message);
       }
     }
   };
