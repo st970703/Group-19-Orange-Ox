@@ -153,7 +153,7 @@ const Header = () => {
         <Divider />
         <List>{listMenuItems}</List>
       </Drawer>
-      <main className={classes.content}> {/* where the components get rendered */}
+      <main className={classes.content}>
         <div className={classes.appBarSpacer}>
           <Container className={classes.container}>
             <Switch>

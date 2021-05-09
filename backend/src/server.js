@@ -94,9 +94,6 @@ io.sockets.on('connection',
 
             // Send it to all other clients
             socket.broadcast.emit('pen', data);
-
-            // This is a way to send to everyone including sender
-            // io.sockets.emit('message', "this goes to everyone");
           } else {
             return;
           }
@@ -112,9 +109,6 @@ io.sockets.on('connection',
 
             // Send it to all other clients
             socket.broadcast.emit('shape', data);
-
-            // This is a way to send to everyone including sender
-            // io.sockets.emit('message', "this goes to everyone");
           } else {
             return;
           }
@@ -130,9 +124,6 @@ io.sockets.on('connection',
 
             // Send it to all other clients
             socket.broadcast.emit('eraser', data);
-
-            // This is a way to send to everyone including sender
-            // io.sockets.emit('message', "this goes to everyone");
           } else {
             return;
           }
@@ -148,9 +139,6 @@ io.sockets.on('connection',
 
             // Send it to all other clients
             socket.broadcast.emit('clear');
-
-            // This is a way to send to everyone including sender
-            // io.sockets.emit('message', "this goes to everyone");
           } else {
             return;
           }
