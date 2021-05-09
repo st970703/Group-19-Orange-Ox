@@ -1,7 +1,12 @@
 # SE750/CS732 Group-19-Orange-Ox
 <img src="./frontend/src/img/orange-ox.svg" alt="Orange_ox_logo" height="90">
-<br/>
+
+# Kids' Virtual Playground Project
 <img src="./img/Screenshot_imac_front.png" alt="App_screenshot" width="790">
+
+This is a virtual drawing canvas Web App for kids aged 5 to 10 years old, especially designed for COVID-19 lockdowns.
+
+This is designed for virtual play dates to encourage social as well as cognitive growth in children.
 
 ## Getting Started
 
