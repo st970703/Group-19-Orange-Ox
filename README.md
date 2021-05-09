@@ -48,13 +48,13 @@ to run the backend Express HTTP server on port 3001.
 ## Running the tests
 
 ### Backend Testing
-* In the `backend` directory, run command:
+In the `backend` directory, run command:
 ```
 npm test
 ```
 this will run the tests for MongoDB and Express.
-### Running the shallow tests on the frontend
-Go to the frontend directory, and then
+### Frontend (Shallow) Testing
+In the `frontend` directory, run command:
 ```
 npm run test
 ```
