@@ -26,14 +26,16 @@ function Toolbar({ handleClear, handleSave }) {
             justifyContent="center"
             ml={2}>
             <Box display="flex" flexDirection="row">
-                <Tooltip title="Save">
+                <Tooltip title="Save" arrow={true}
+                    id={'Save_tooltip'}>
                     <button className={styles.toolbarButton}
                         onClick={() => handleSave()}>
                         <FaSave className={styles.toolbarButtonIcon} />
                     </button>
                 </Tooltip>
 
-                <Tooltip title="Clear">
+                <Tooltip title="Clear" arrow={true}
+                    id={'Clear_tooltip'}>
                     <button className={styles.toolbarButton}
                         onClick={() => handleClear()}>
                         <FaRegTrashAlt className={styles.toolbarButtonIcon} />
@@ -45,7 +47,9 @@ function Toolbar({ handleClear, handleSave }) {
                 <div className={styles.brushes}>
                     {brushes.map((brush_i, i) => (
                         <Tooltip title={capitalise(brush_i.brushType)}
-                            key={capitalise(brush_i.brushType) + "_tooltip"}>
+                            id={capitalise(brush_i.brushType) + "_tooltip"}
+                            key={capitalise(brush_i.brushType) + "_tooltip"}
+                            arrow={true} >
                             <div className={styles.brush} key={i}
                                 onClick={() => handleSetBrush(brush_i)}
                                 style={brush === brush_i.brushType ?

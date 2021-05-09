@@ -1,9 +1,11 @@
 # SE750/CS732 Group-19-Orange-Ox
 <img src="./frontend/src/img/orange-ox.svg" alt="Orange_ox_logo" height="90">
+<br/><br/>
+<img src="./img/Screenshot.png" alt="App_screenshot" height="300">
 
 ## Getting Started
 
-These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. See deployment for notes on how to deploy the project on a live system.
+These instructions will get you a copy of the project up and running on your local machine for development and testing purposes.
 
 ### Prerequisites
 
@@ -44,15 +46,17 @@ to run the backend Express HTTP server on port 3001.
 
 ## Running the tests
 
-Explain how to run the automated tests for this system
-
-### Break down into end to end tests
-
-Explain what these tests test and why
-
+### Running the shallow tests on the frontend
+Go to the frontend directory, and then
 ```
-Give an example
+npm run test
 ```
+
+## Notes for Warnings and Errors
+```
+Warning: findDOMNode is deprecated in StrictMode. findDOMNode was passed an instance of Transition which is inside StrictMode. Instead, add a ref directly to the element you want to reference.
+```
+This issue is related to the Material UI Tooltips. The tooltips wrap around the components and are assigned keys and id's. However, this warning is triggered.
 
 ## Authors
 
@@ -62,4 +66,4 @@ Give an example
 
 ## License
 
-This project is licensed under the [__GNU General Public License__](LICENSE)
+[__GNU General Public License__](LICENSE)
