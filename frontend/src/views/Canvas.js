@@ -7,6 +7,7 @@ import SmallScreenMsg from '../components/SmallScreenMsg';
 import WarningSnackBar from '../components/WarningSnackBar';
 import Colourbar from '../components/Colourbar';
 import Toolbar from '../components/Toolbar';
+import { canvasWidth, canvasHeight } from '../config/CanvasConfig';
 
 
 function Canvas() {
@@ -35,9 +36,6 @@ function Canvas() {
       setOpenSBar(true);
     }
   }
-
-  const canvasWidth = 960;
-  const canvasHeight = 529;
 
   const isMobile = useMediaQuery({ query: `(max-width: 760px)` });
 

@@ -19,7 +19,9 @@ function Colourbar() {
             justifyContent="center">
             {colors.map((color_i, i) => (
                 <Tooltip title={capitalise(color_i.name)}
-                    key={capitalise(color_i.name) + "_tooltip"}>
+                    key={capitalise(color_i.name) + "_tooltip"}
+                    arrow={true}
+                    id={capitalise(color_i.name)+'_tooltip'}>
                     <div className={styles.color} key={i}
                         style={{ backgroundColor: (color_i.hex) }}
                         onClick={() => setColor(color_i.hex)}>
