@@ -1,7 +1,7 @@
 # SE750/CS732 Group-19-Orange-Ox
 <img src="./frontend/src/img/orange-ox.svg" alt="Orange_ox_logo" height="90">
 <br/>
-<img src="./img/Screenshot.png" alt="App_screenshot" height="300">
+<img src="./img/Screenshot_imac_front.png" alt="App_screenshot" height="300">
 
 ## Getting Started
 
