@@ -53,20 +53,17 @@ In the `backend` directory, run command:
 npm test
 ```
 this will run the tests for MongoDB and Express.
+
 ### Frontend (Shallow) Testing
 In the `frontend` directory, run command:
 ```
 npm run test
 ```
 
-## Notes for Warnings and Errors
-```
-Warning: findDOMNode is deprecated in StrictMode. findDOMNode was passed an instance of Transition which is inside StrictMode. Instead, add a ref directly to the element you want to reference.
-```
-This issue is related to the Material UI Tooltips. The tooltips wrap around the components and are assigned keys and id's. However, this warning is triggered.
+## Wiki and Notes
+[GitHub WiKi](https://github.com/st970703/Group-19-Orange-Ox/wiki)
 
 ## Authors
-
 * Mike Lee (st970703)
 * Jusin Kim (naznsan)
 * Callum Bradding (calcalbrad)
