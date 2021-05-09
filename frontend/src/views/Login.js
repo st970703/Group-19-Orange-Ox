@@ -9,7 +9,7 @@ import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
-import Divider from '@material-ui/core/Divider';
+import Divider from "@material-ui/core/Divider";
 
 // function to call fetch request to check if the login is valid
 async function checkloginUser(credentials) {
@@ -59,11 +59,7 @@ function TabPanel(props) {
       aria-labelledby={`simple-tab-${index}`}
       {...other}
     >
-      {value === index && (
-        <>
-          {children}
-        </>
-      )}
+      {value === index && <>{children}</>}
     </div>
   );
 }
@@ -76,17 +72,23 @@ function a11yProps(index) {
   };
 }
 
-export default function Login({ setToken })  {
+export default function Login({ setToken }) {
   const [username, setUserName] = useState();
   const [password, setPassword] = useState();
+  const [confirmPassword, setConfirmPassword] = useState();
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState(0);
   const [dialogText, setText] = useState();
-  
+
   // used to handle a login request
   const handleLoginSubmit = async (e) => {
     e.preventDefault();
-    if (username === "" || username === undefined || password === "" || password === undefined) {
+    if (
+      username === "" ||
+      username === undefined ||
+      password === "" ||
+      password === undefined
+    ) {
       setText("Please enter a username and/or password!");
     } else {
       const response = await checkloginUser({
@@ -117,8 +119,17 @@ export default function Login({ setToken })  {
   const handleCreateSubmit = async (e) => {
     e.preventDefault();
     // if the username is not entered or defined, update the dialog text
-    if (username === "" || username === undefined || password === "" || password === undefined) {
+    if (
+      username === "" ||
+      username === undefined ||
+      password === "" ||
+      password === undefined ||
+      confirmPassword === "" ||
+      confirmPassword === undefined
+    ) {
       setText("Please enter a username and/or password!");
+    } else if (password !== confirmPassword) {
+      setText("Password & Confirmation Password do not match! Please try again.")
     } else {
       const response = await createUser({
         username,
@@ -127,8 +138,11 @@ export default function Login({ setToken })  {
 
       // if error is 400, the username already exists within the system
       if (response.status === 400) {
-        setText("This username has already been taken! Please enter another one.");
-      } else if (response.status === 200) { // if response is 200 they are a valid user and can be logged in
+        setText(
+          "This username has already been taken! Please enter another one."
+        );
+      } else if (response.status === 200) {
+        // if response is 200 they are a valid user and can be logged in
         const token = await loginUser({
           username,
           password,
@@ -180,8 +194,12 @@ export default function Login({ setToken })  {
         aria-labelledby="form-dialog-title"
       >
         <Tabs value={value} onChange={handleChange}>
-          <Tab label="Log In" {...a11yProps(0)} onClick={onLoginTabClicked}/>
-          <Tab label="Create User" {...a11yProps(1)} onClick={onCreateUserTabClicked}/>
+          <Tab label="Log In" {...a11yProps(0)} onClick={onLoginTabClicked} />
+          <Tab
+            label="Create User"
+            {...a11yProps(1)}
+            onClick={onCreateUserTabClicked}
+          />
         </Tabs>
         <Divider />
         <TabPanel value={value} index={0}>
@@ -208,7 +226,6 @@ export default function Login({ setToken })  {
               label="Password"
               variant="outlined"
               type="password"
-              autoComplete="current-password"
               color="primary"
               fullWidth
             />
@@ -245,8 +262,19 @@ export default function Login({ setToken })  {
               id="password"
               label="Password"
               variant="outlined"
-              type="text"
+              type="password"
               autoComplete="current-password"
+              color="primary"
+              fullWidth
+            />
+            <TextField
+              onChange={(e) => setConfirmPassword(e.target.value)}
+              required
+              margin="dense"
+              id="confirmPassword"
+              label="Confirm Password"
+              variant="outlined"
+              type="password"
               color="primary"
               fullWidth
             />
